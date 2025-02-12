@@ -1,0 +1,77 @@
+import "@ant-design/v5-patch-for-react-19";
+import React from "react";
+import { ConfigProvider } from "antd";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./App.css";
+
+// Components
+import Header from "./components/Header";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Footer from "./components/Footer";
+import { UserProvider } from "./components/UserContext";
+
+// Pages
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+
+function App() {
+  return (
+    <ConfigProvider
+      theme={{
+        token: {},
+        components: {
+          Button: {
+            defaultBg: "#FFD700",
+            defaultHoverBg: "#E5C100",
+            defaultBorderColor: "#FFD700",
+            defaultHoverBorderColor: "#FFD700",
+            defaultHoverColor: "#000000",
+            colorText: "#FFFFFF",
+            colorBgDisabled: "#E5C100",
+            colorBorderDisabled: "#E5C100",
+            colorTextDisabled: "#999999",
+          },
+        },
+      }}
+    >
+      <Router>
+        <UserProvider>
+        <div className="fixed top-0 left-0 w-full z-50 bg-[#1e3a34] shadow-md">
+          <Header className="" />
+        </div>
+        <div className="bg-[#1e3a342f] min-h-screen">
+          <div className="px-6 py-5">
+            <Routes>
+              {/* Route untuk halaman login dan register */}
+              <Route path="/" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+
+              {/* Protected Routes */}
+              <Route
+                path="/*"
+                element={
+                  <ProtectedRoute>
+                    <div className="pt-16">
+                      <div className="min-h-screen my-5">
+                        <Routes>
+                          <Route path="/dashboard" element={<Dashboard />} />
+                          <Route path="/absen" element={<Dashboard />} />
+                        </Routes>
+                      </div>
+                    </div>
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </div>
+
+          <Footer />
+        </div>
+        </UserProvider>
+      </Router>
+    </ConfigProvider>
+  );
+}
+
+export default App;
