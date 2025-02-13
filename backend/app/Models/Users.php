@@ -12,8 +12,10 @@ class Users extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable; // Tambahkan HasApiTokens
 
     protected $fillable = [
+        'nis',
         'name',
-        'email',
+        'kelas',
+        'role',
         'password',
     ];
 

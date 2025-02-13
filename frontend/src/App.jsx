@@ -15,23 +15,30 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 
+//places
+import Places from "./pages/places/Places";
+import CreatePlaces from "./pages/places/CreatePlaces";
+import UpdatePlaces from "./pages/places/UpdatePlaces";
+
 function App() {
   return (
     <ConfigProvider
       theme={{
         token: {},
         components: {
-          Button: {
-            defaultBg: "#FFD700",
-            defaultHoverBg: "#E5C100",
-            defaultBorderColor: "#FFD700",
-            defaultHoverBorderColor: "#FFD700",
-            defaultHoverColor: "#000000",
-            colorText: "#FFFFFF",
-            colorBgDisabled: "#E5C100",
-            colorBorderDisabled: "#E5C100",
-            colorTextDisabled: "#999999",
+          Table: {
+            headerBg: "#1E3A34",
+            headerColor: "#FFD700",
           },
+          Pagination: {
+            itemActiveBg: "#1E3A34",
+          },
+          Select: {
+            selectorBg: '#3e947e',
+            colorText: "#FFD700",
+            optionSelectedBg: "#1E3A34",
+            optionActiveBg: "#3e947e",
+          }
         },
       }}
     >
@@ -53,10 +60,12 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <div className="pt-16">
-                      <div className="min-h-screen my-5">
+                      <div className="min-h-max my-5">
                         <Routes>
                           <Route path="/dashboard" element={<Dashboard />} />
-                          <Route path="/absen" element={<Dashboard />} />
+                          <Route path="/notifications" element={<Places />} />
+                          <Route path="/notifications/create" element={<CreatePlaces />} />
+                          <Route path="/notifications/:id" element={<UpdatePlaces />} />
                         </Routes>
                       </div>
                     </div>

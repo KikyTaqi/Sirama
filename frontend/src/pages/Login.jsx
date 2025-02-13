@@ -49,13 +49,13 @@ const Login = ({ setIsAuthenticated }) => {
             layout="vertical"
           >
             <Form.Item
-              label={<span className="text-[#FFD700]">Email</span>}
-              name="email"
+              label={<span className="text-[#FFD700]">NIS/NIP</span>}
+              name="nis"
               rules={[{ required: true, message: "Please input your email!" }]}
             >
               <Input
-                className="py-2 px-3 border !border-[#FFD700] !text-[#FFD700] rounded-md w-full !bg-[#3e947e]"
-                placeholder="Enter your email"
+                className="py-2 px-3 border !border-[#FFD700] !text-[#FFD700] rounded-md w-full !bg-[#4cb399]"
+                placeholder="Masukan NIS/NIP"
               />
             </Form.Item>
 
@@ -67,18 +67,18 @@ const Login = ({ setIsAuthenticated }) => {
               ]}
             >
               <Input.Password
-                className="py-2 px-3 border !border-[#FFD700] !text-[#FFD700] rounded-md w-full !bg-[#3e947e]"
-                placeholder="Enter your password"
+                className="py-2 px-3 border !border-[#FFD700] !text-[#FFD700] rounded-md w-full !bg-[#4cb399]"
+                placeholder="Masukan password"
               />
             </Form.Item>
 
             <Form.Item>
               <Button
-                type="default"
+                type="secondary"
                 htmlType="submit"
                 loading={loading}
                 disabled={loading}
-                className="w-full border-none text-white hover:!text-white py-2 rounded-md !font-semibold disabled:!bg-[#E5C100] disabled:!text-white"
+                className="w-full border-none !text-white hover:!text-gray-100 !bg-amber-300 hover:!bg-amber-200 py-2 rounded-md !font-semibold disabled:!bg-[#E5C100] disabled:!text-white"
               >
                 Login
               </Button>

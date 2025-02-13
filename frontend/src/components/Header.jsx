@@ -129,7 +129,7 @@ const Header = () => {
             </div>
           </div>
           <ul className="space-y-2 text-sm">
-            {location.pathname === "/" || location.pathname === "/register" ? (
+            {!user ? (
               <li
                 key={1}
                 className="rounded-md"

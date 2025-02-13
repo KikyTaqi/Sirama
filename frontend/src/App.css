@@ -1,0 +1,9 @@
+.custom-pagination .ant-pagination-item-active {
+    background-color: #1E3A34 !important; /* Warna latar belakang item aktif */
+    border-color: #FFD700 !important; /* Warna border item aktif */
+  }
+  
+  .custom-pagination .ant-pagination-item-active a {
+    color: #FFD700 !important; /* Warna teks item aktif */
+  }
+  

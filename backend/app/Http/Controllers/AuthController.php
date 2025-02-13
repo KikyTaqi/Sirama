@@ -14,14 +14,17 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
+            'nis' => 'required|string|max:255|unique:users',
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'kelas' => 'required|string|max:255',
             'password' => 'required|string|min:6',
         ]);
 
         $user = Users::create([
+            'nis' => $request->nis,
             'name' => $request->name,
-            'email' => $request->email,
+            'kelas' => $request->kelas,
+            'role' => "siswa",
             'password' => Hash::make($request->password),
         ]);
 
@@ -32,11 +35,11 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'nis' => 'required',
             'password' => 'required',
         ]);
 
-        $user = Users::where('email', $request->email)->first();
+        $user = Users::where('nis', $request->nis)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
