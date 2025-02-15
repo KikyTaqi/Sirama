@@ -8,8 +8,8 @@ import { useNavigate } from "react-router-dom";
 const API_URL = "http://127.0.0.1:8000/api/places";
 
 const defaultCenter = {
-  lat: -7.110958672034551,
-  lng: 110.27712970443156,
+  lat: null,
+  lng: null,
 };
 
 const CreatePlace = () => {
@@ -19,42 +19,82 @@ const CreatePlace = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate();
   const [currentLocation, setCurrentLocation] = useState(defaultCenter);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    let watchId; // Simpan ID watchPosition untuk bisa dihentikan nanti
+  
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setCurrentLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        () => setIsModalVisible(true), // Tampilkan modal jika geolocation tidak aktif
-        { enableHighAccuracy: true }
-      );
+      setLoading(true);
+      navigator.permissions.query({ name: "geolocation" }).then((result) => {
+        if (result.state === "denied") {
+          setIsModalVisible(true); // Izin lokasi ditolak
+        } else {
+          // Hapus cache lokasi (jika browser mendukung)
+          if (navigator.permissions.revoke) {
+            navigator.permissions.revoke({ name: "geolocation" }).catch(() => {});
+          }
+  
+          // Paksa ambil lokasi terbaru
+          watchId = navigator.geolocation.watchPosition(
+            (position) => {
+              setCurrentLocation({
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              });
+              setLoading(false);
+            },
+            (error) => {
+              if (error.code === error.PERMISSION_DENIED) {
+                setIsModalVisible(true);
+              } else if (error.code === error.POSITION_UNAVAILABLE) {
+                setCurrentLocation(defaultCenter); // Jika lokasi tidak tersedia, reset ke null
+              }
+            },
+            { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+          );
+        }
+      });
     } else {
       setIsModalVisible(true);
     }
+  
+    // Bersihkan watchPosition saat komponen di-unmount
+    return () => {
+      if (watchId) {
+        navigator.geolocation.clearWatch(watchId);
+      }
+    };
   }, []);
-
+  
+  
+  useEffect(() => {
+    console.log("Current Location: "+JSON.stringify(currentLocation.lat+", "+currentLocation.lng));
+  },[currentLocation]);
+  
   const handleSubmit = async (values) => {
     try {
-      const formData = new FormData();
-      formData.append("title", values.title);
-      formData.append("description", values.description);
-      formData.append("latitude", currentLocation.lat);
-      formData.append("longitude", currentLocation.lng);
-      if (file) formData.append("image", file);
+      if(currentLocation.lat === null || currentLocation.lng === null || currentLocation.lat === 	"-7.1073792" || currentLocation.lng === "110.2807040") {
+        message.error("Tolong nyalakan lokasi.");
+        return;
+      }else{
+        const formData = new FormData();
+        formData.append("title", values.title);
+        formData.append("description", values.description);
+        formData.append("latitude", currentLocation.lat);
+        formData.append("longitude", currentLocation.lng);
+        if (file) formData.append("image", file);
 
-      await axios.post(API_URL, formData);
-      message.success("Added successfully!");
-      navigate("/notifications");
+        await axios.post(API_URL, formData);
+        message.success("Added successfully!");
+        navigate("/notifications");
+      }
     } catch (error) {
       console.error("Error submitting data:", error.response?.data);
       message.error("Error submitting data");
     }
   };
-
+  
   // Handle upload image
   const handleUpload = (file) => {
     const reader = new FileReader();
@@ -77,6 +117,14 @@ const CreatePlace = () => {
                 Create Location
               </h2>
           </div>
+
+          <iframe
+            width="300"
+            height="200"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            src={`https://maps.google.com/maps?q=${currentLocation.lat},${currentLocation.lng}&z=15&output=embed`}
+          />
 
           {/* Form */}
           <div>
@@ -107,7 +155,7 @@ const CreatePlace = () => {
                   </Upload>
                 </Space>
               </Form.Item>
-              <Button type="secondary" className="!bg-amber-400 !font-semibold" htmlType="submit">
+              <Button type="secondary" className="!bg-amber-400 !font-semibold" htmlType="submit" loading={loading}>
                 Add Place
               </Button>
             </Form>

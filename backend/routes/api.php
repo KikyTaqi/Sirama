@@ -15,5 +15,5 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     
 });
-Route::apiResource('/places', PlaceController::class);
+Route::apiResource('/sholat', PlaceController::class);
 

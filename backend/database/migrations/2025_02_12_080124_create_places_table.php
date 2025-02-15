@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up()
 {
+    Schema::rename('places', 'sholat');
     Schema::create('places', function (Blueprint $table) {
         $table->id();
         $table->string('title');

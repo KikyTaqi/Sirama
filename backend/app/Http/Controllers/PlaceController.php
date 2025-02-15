@@ -2,11 +2,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Place;
+use App\Models\Sholat;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
-class PlaceController extends Controller
+class SholatController extends Controller
 {
     public function index()
     {
@@ -75,10 +75,6 @@ class PlaceController extends Controller
 
         return response()->json(['message' => 'Updated successfully', 'place' => $place]);
     }
-
-
-
-    
 
     public function destroy($id)
     {

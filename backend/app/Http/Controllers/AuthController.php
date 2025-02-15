@@ -34,26 +34,33 @@ class AuthController extends Controller
     // LOGIN
     public function login(Request $request)
     {
-        $request->validate([
-            'nis' => 'required',
-            'password' => 'required',
-        ]);
-
-        $user = Users::where('nis', $request->nis)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+        try{
+            $request->validate([
+                'nis' => 'required',
+                'password' => 'required',
+            ]);
+    
+            $user = Users::where('nis', $request->nis)->first();
+    
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                throw ValidationException::withMessages([
+                    'email' => ['The provided credentials are incorrect.'],
+                ]);
+            }
+    
+            $token = $user->createToken('auth_token')->plainTextToken;
+    
+            return response()->json([
+                'message' => 'Login successful',
+                'token' => $token,
+                'user' => $user
+            ]);
+        }catch(err){
+            return response()->json([
+                'message' => 'Login failed',
+                'error' => $err
             ]);
         }
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Login successful',
-            'token' => $token,
-            'user' => $user
-        ]);
     }
 
     // LOGOUT
