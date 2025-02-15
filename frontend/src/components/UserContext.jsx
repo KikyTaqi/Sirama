@@ -6,7 +6,7 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Default loading true
+  const [loadingUser, setLoading] = useState(true); // Default loading true
 
   const fetchUser = async () => {
     setLoading(true);
@@ -36,7 +36,7 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, loading, fetchUser }}>
+    <UserContext.Provider value={{ user, loadingUser, fetchUser }}>
       {children}
     </UserContext.Provider>
   );

@@ -15,6 +15,10 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 
+//solat
+import Solat from "./pages/solat/Solat";
+import CreateSolat from "./pages/solat/CreateSolat";
+
 //places
 import Places from "./pages/places/Places";
 import CreatePlaces from "./pages/places/CreatePlaces";
@@ -34,7 +38,7 @@ function App() {
             itemActiveBg: "#1E3A34",
           },
           Select: {
-            selectorBg: '#3e947e',
+            selectorBg: '#4cb399',
             colorText: "#FFD700",
             optionSelectedBg: "#1E3A34",
             optionActiveBg: "#3e947e",
@@ -59,13 +63,15 @@ function App() {
                 path="/*"
                 element={
                   <ProtectedRoute>
-                    <div className="pt-16">
+                    <div className="pt-14">
                       <div className="min-h-max my-5">
                         <Routes>
                           <Route path="/dashboard" element={<Dashboard />} />
                           <Route path="/notifications" element={<Places />} />
                           <Route path="/notifications/create" element={<CreatePlaces />} />
                           <Route path="/notifications/:id" element={<UpdatePlaces />} />
+                          <Route path="/solat" element={<Solat />} />
+                          <Route path="/solat/create" element={<CreateSolat />} />
                         </Routes>
                       </div>
                     </div>

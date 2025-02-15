@@ -4,8 +4,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { IoIosArrowBack } from "react-icons/io";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-const API_URL = "http://127.0.0.1:8000/api/places";
+import { URL_SHOLAT } from "../../utils/Endpoint";
 
 const defaultCenter = {
   lat: null,
@@ -85,10 +84,9 @@ const CreatePlace = () => {
         formData.append("longitude", currentLocation.lng);
         if (file) formData.append("image", file);
 
-        await axios.post(API_URL, formData);
-        message.success("Added successfully!");
-        navigate("/notifications");
-      }
+      await axios.post(URL_SHOLAT, formData);
+      message.success("Added successfully!");
+      navigate("/notifications");
     } catch (error) {
       console.error("Error submitting data:", error.response?.data);
       message.error("Error submitting data");
