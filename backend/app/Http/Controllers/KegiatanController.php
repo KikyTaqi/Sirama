@@ -53,6 +53,11 @@ class KegiatanController extends Controller
 
         $kegiatan = Kegiatan::where('user_id', $user_id)->orderBy('id', 'DESC')->get();
         $kultum = Kultum::where('user_id', $user_id)->orderBy('id', 'DESC')->get();
+        $bc = bcrypt('guru');
+        error_log("1: ".bcrypt('guru'));
+        if($bc == bcrypt('guru')){
+            error_log("2: ".bcrypt('guru'));
+        }
 
         return response()->json(['kegiatan' => $kegiatan, 'kultum' => $kultum]);
     }

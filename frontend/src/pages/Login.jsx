@@ -17,6 +17,9 @@ const Login = ({ setIsAuthenticated }) => {
       localStorage.setItem("token", data.token);
       message.success("Login berhasil!");
       await fetchUser();
+      // if(user.role == "siswa") navigate("/dashboard");
+      // else if(user.role == "guru") navigate("/guru/dashboard");
+      // else if(user.role == "admin") navigate("/admin/dashboard");
       navigate("/dashboard"); // Redirect setelah login
     } catch (error) {
       message.error("Login gagal! Periksa email dan password.");

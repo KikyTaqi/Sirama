@@ -9,11 +9,14 @@ import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Footer from "./components/Footer";
 import { UserProvider } from "./components/UserContext";
+import ProtectedSiswa from "./components/ProtectedSiswa";
+import NotFound from "./components/NotFound";
 
 // Pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import DashboardGuru from "./pages/guru/DashboardGuru";
 
 //solat
 import Solat from "./pages/solat/Solat";
@@ -70,22 +73,28 @@ function App() {
                   <ProtectedRoute>
                     <div className="pt-14">
                       <div className="min-h-max my-5">
+                        {/* <ProtectedSiswa> */}
+                          <Routes>
+                              <Route path="/dashboard" element={<Dashboard />} />
+                              <Route path="/notifications" element={<Places />} />
+                              <Route path="/notifications/create" element={<CreatePlaces />} />
+                              <Route path="/notifications/:id" element={<UpdatePlaces />} />
+                              <Route path="/solat" element={<Solat />} />
+                              <Route path="/solat/create" element={<CreateSolat />} />
+                              <Route path="/kegiatan/create" element={<CreateKegiatan />} />
+                              <Route path="/kegiatan/kultum" element={<Kultum />} />
+                              <Route path="/kegiatan/kultum/create" element={<CreateKultum />} />
+                          </Routes>
+                        {/* </ProtectedSiswa> */}
                         <Routes>
-                          <Route path="/dashboard" element={<Dashboard />} />
-                          <Route path="/notifications" element={<Places />} />
-                          <Route path="/notifications/create" element={<CreatePlaces />} />
-                          <Route path="/notifications/:id" element={<UpdatePlaces />} />
-                          <Route path="/solat" element={<Solat />} />
-                          <Route path="/solat/create" element={<CreateSolat />} />
-                          <Route path="/kegiatan/create" element={<CreateKegiatan />} />
-                          <Route path="/kegiatan/kultum" element={<Kultum />} />
-                          <Route path="/kegiatan/kultum/create" element={<CreateKultum />} />
+                          <Route path="/guru/dashboard" element={<DashboardGuru />} />
                         </Routes>
                       </div>
                     </div>
                   </ProtectedRoute>
                 }
               />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
 
