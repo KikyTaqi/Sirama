@@ -1,10 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Form, Input, Button, DatePicker, message, Spin, InputNumber } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  DatePicker,
+  message,
+  Spin,
+  InputNumber,
+} from "antd";
 import { RiAddCircleFill } from "react-icons/ri";
 import axios from "axios";
 import dayjs from "dayjs";
 import { IoIosArrowBack } from "react-icons/io";
+
+import { URL_KEGIATAN } from "../../utils/Endpoint";
 
 const CreateKultum = () => {
   const [form] = Form.useForm();
@@ -22,12 +32,16 @@ const CreateKultum = () => {
         ringkasan: values.ringkasan,
       };
 
-      await axios.post("http://127.0.0.1:8000/api/kegiatan/kultum/add", formData, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      await axios.post(
+        `${URL_KEGIATAN}/kultum/add`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       navigate("/kegiatan/kultum");
       message.success("Berhasil menyimpan kultum!");
@@ -39,89 +53,103 @@ const CreateKultum = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen px-4">
+    <div className="flex justify-center items-center py-4 px-4">
       <div className="bg-[#2A5D50] shadow-lg rounded-lg p-6 w-full max-w-md">
         <div className="flex mb-4">
-            <IoIosArrowBack
-                className="text-[#FFD700] mt-3 text-xl cursor-pointer"
-                onClick={() => {
-                navigate(-1);
-                }}
+          <IoIosArrowBack
+            className="text-[#FFD700] mt-3 text-xl cursor-pointer"
+            onClick={() => {
+              navigate(-1);
+            }}
+          />
+          <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#FFD700] mb-3 w-full capitalize">
+            Tambah kultum
+          </h2>
+        </div>
+        <Form form={form} onFinish={handleSubmit} layout="vertical">
+          <Form.Item
+            label={
+              <span className="text-[#FFD700] font-semibold">Tanggal</span>
+            }
+            name="date"
+            rules={[{ required: true, message: "Pilih tanggal!" }]}
+          >
+            <DatePicker
+              className="w-full !bg-[#4cb399] !border-[#FFD700] !text-[#FFD700] font-semibold"
+              format="YYYY-MM-DD"
+              placeholder="Pilih tanggal kultum"
             />
-            <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#FFD700] mb-3 w-full capitalize">
-                Tambah kultum
-            </h2>
-            </div>
-            <Form form={form} onFinish={handleSubmit} layout="vertical">
-                <Form.Item
-                    label={<span className="text-[#FFD700] font-semibold">Tanggal</span>}
-                    name="date"
-                    rules={[{ required: true, message: "Pilih tanggal!" }]}
-                >
-                    <DatePicker
-                    className="w-full !bg-[#4cb399] !border-[#FFD700] !text-[#FFD700] font-semibold"
-                    format="YYYY-MM-DD"
-                    placeholder="Pilih tanggal kultum"
-                    />
-                </Form.Item>
+          </Form.Item>
 
-                <Form.Item
-                    label={<span className="text-[#FFD700] font-semibold">Ramadhan ke-</span>}
-                    name="ramadhan"
-                    rules={[{ required: true, message: "Masukkan nomor Ramadhan!" }]}
-                >
-                    <Input
-                    placeholder="Contoh: 3, 6, 7"
-                    className="w-full !bg-[#4cb399] !border-[#FFD700] !text-[#FFD700] font-semibold"
-                    />
-                </Form.Item>
+          <Form.Item
+            label={
+              <span className="text-[#FFD700] font-semibold">
+                Ramadhan hari ke-
+              </span>
+            }
+            name="ramadhan"
+            rules={[{ required: true, message: "Masukkan nomor Ramadhan!" }]}
+          >
+            <InputNumber
+              placeholder="Contoh: 3, 6, 7"
+              className="w-full !bg-[#4cb399] !border-[#FFD700] !text-[#FFD700] font-semibold"
+              style={{ width: '100%', color: '#FFD700' }}
+              min={1}
+              max={30}
+              // controls={false} // Ini biar tombol up/down di samping ilang, opsional
+            />
+          </Form.Item>
 
-                <Form.Item
-                    label={<span className="text-[#FFD700] font-semibold">Penceramah</span>}
-                    name="penceramah"
-                    rules={[{ required: true, message: "Masukkan nama penceramah!" }]}
-                >
-                    <Input
-                    placeholder="Masukkan nama penceramah"
-                    className="w-full !bg-[#4cb399] !border-[#FFD700] !text-[#FFD700] font-semibold"
-                    />
-                </Form.Item>
+          <Form.Item
+            label={
+              <span className="text-[#FFD700] font-semibold">Penceramah</span>
+            }
+            name="penceramah"
+            rules={[{ required: true, message: "Masukkan nama penceramah!" }]}
+          >
+            <Input
+              placeholder="Masukkan nama penceramah"
+              className="w-full !bg-[#4cb399] !border-[#FFD700] !text-[#FFD700] font-semibold"
+            />
+          </Form.Item>
 
-                <Form.Item
-                    label={<span className="text-[#FFD700] font-semibold">Tempat</span>}
-                    name="tempat"
-                    rules={[{ required: true, message: "Masukkan tempat!" }]}
-                >
-                    <Input
-                    placeholder="Masukkan lokasi kultum, contoh: Masjid Al-Falah"
-                    className="w-full !bg-[#4cb399] !border-[#FFD700] !text-[#FFD700] font-semibold"
-                    />
-                </Form.Item>
+          <Form.Item
+            label={<span className="text-[#FFD700] font-semibold">Tempat</span>}
+            name="tempat"
+            rules={[{ required: true, message: "Masukkan tempat!" }]}
+          >
+            <Input
+              placeholder="Masukkan lokasi kultum, contoh: Masjid Al-Falah"
+              className="w-full !bg-[#4cb399] !border-[#FFD700] !text-[#FFD700] font-semibold"
+            />
+          </Form.Item>
 
-                <Form.Item
-                    label={<span className="text-[#FFD700] font-semibold">Ringkasan</span>}
-                    name="ringkasan"
-                    rules={[{ required: true, message: "Masukkan ringkasan!" }]}
-                >
-                    <Input.TextArea
-                    rows={4}
-                    placeholder="Tulis ringkasan kultum, misal: Tema kultum tentang keutamaan sedekah..."
-                    className="w-full !bg-[#4cb399] !border-[#FFD700] !text-[#FFD700] font-semibold !resize-none"
-                    />
-                </Form.Item>
+          <Form.Item
+            label={
+              <span className="text-[#FFD700] font-semibold">Ringkasan</span>
+            }
+            name="ringkasan"
+            rules={[{ required: true, message: "Masukkan ringkasan!" }]}
+          >
+            <Input.TextArea
+              rows={4}
+              placeholder="Tulis ringkasan kultum, misal: Tema kultum tentang keutamaan sedekah..."
+              className="w-full !bg-[#4cb399] !border-[#FFD700] !text-[#FFD700] font-semibold !resize-none"
+            />
+          </Form.Item>
 
-                <div className="flex justify-end">
-                    <Button
-                    type="secondary"
-                    htmlType="submit"
-                    loading={loading}
-                    className="!bg-amber-400 !font-semibold !text-white"
-                    icon={<RiAddCircleFill />}
-                    >
-                    Tambah
-                    </Button>
-                </div>
-            </Form>
+          <div className="flex justify-end">
+            <Button
+              type="secondary"
+              htmlType="submit"
+              loading={loading}
+              className="!bg-amber-400 !font-semibold !text-white"
+              icon={<RiAddCircleFill />}
+            >
+              Tambah
+            </Button>
+          </div>
+        </Form>
       </div>
     </div>
   );

@@ -146,7 +146,7 @@ const Solat = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen px-4">
+    <div className="flex justify-center items-center py-4 px-4">
       <div className="bg-[#2A5D50] shadow-lg rounded-lg p-6 w-full max-w-md">
         {/* Header */}
         <h2 className="text-2xl font-bold text-center text-[#FFD700] mb-6">

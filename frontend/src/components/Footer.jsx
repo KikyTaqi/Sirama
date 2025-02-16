@@ -68,12 +68,12 @@ const CustomFooter = () => {
           <div className="w-full md:w-4/12 px-4 mx-auto text-center">
             <div className="text-sm text-[#E5C100] font-semibold py-1">
               Copyright © {new Date().getFullYear() === 2025 ? '2025' : `2025 - ${new Date().getFullYear()}`}
-              <a href="#" className="!text-white hover:!text-gray-300 me-1">
+              <a href="https://www.instagram.com/ifarxd/" target="_blank" className="!text-white hover:!text-gray-300 me-1">
                 {" "}
                 Rafi
               </a>  
                &
-              <a href="#" className="!text-white hover:!text-gray-300">
+              <a href="https://www.instagram.com/rifqiramandhani_/" target="_blank" className="!text-white hover:!text-gray-300">
                 {" "}
                 Taqi
               </a>  

@@ -7,7 +7,7 @@ import Typed from "typed.js";
 import { MenuOutlined } from "@ant-design/icons";
 import { TbArrowBadgeDown } from "react-icons/tb";
 import { HiOutlineLogin, HiOutlineLogout } from "react-icons/hi";
-import { useUser } from '../components/UserContext'
+import { useUser } from '../components/UserContext';
 
 import { FaPersonPraying, FaHouse, FaBookQuran, FaNoteSticky } from "react-icons/fa6";
 
@@ -15,7 +15,7 @@ const Header = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, loading, fetchUser } = useUser();
+  const { user, loadingUser, fetchUser } = useUser();
   const el = useRef(null);
 
 
@@ -117,11 +117,12 @@ const Header = () => {
             />
             <div>
               <h4 className="font-semibold text-lg text-[#FFD700] capitalize">
-                {loading ? <Skeleton.Input active size="small" /> : user?.name || "Belum Login"}
+                {loadingUser ? <Skeleton.Input active size="small" /> : user?.name || "Belum Login"}
               </h4>
               <span className="text-sm tracking-wide flex items-center space-x-1">
                 <TbArrowBadgeDown className="text-green-600 text-2xl" />
-                <span className="text-[#FFD700] uppercase">{user?.kelas}</span>
+                {loadingUser ? <Skeleton.Input active size="small" className="py-2" /> : (<span className="text-[#FFD700] uppercase">{user?.kelas}</span>) || "Belum Login"}
+                
               </span>
             </div>
           </div>

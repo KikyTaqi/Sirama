@@ -16,7 +16,9 @@ import imageCompression from "browser-image-compression";
 
 import { useUser } from "../../components/UserContext";
 import { FaPersonPraying } from "react-icons/fa6";
-import { MdOutlineRefresh  } from "react-icons/md";
+import { MdOutlineRefresh } from "react-icons/md";
+
+import { URL_SHOLAT } from "../../utils/Endpoint";
 
 import axios from "axios";
 
@@ -48,7 +50,7 @@ const CreateSolat = () => {
       formData.append("user_id", user?.id);
       formData.append("date", today);
 
-      await axios.post("http://127.0.0.1:8000/api/prayer-records", formData, {
+      await axios.post(URL_SHOLAT, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -65,7 +67,7 @@ const CreateSolat = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/prayer-records/user/${user?.id}`,
+        `${URL_SHOLAT}/user/${user?.id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -252,6 +254,8 @@ const CreateSolat = () => {
 
     setCurrentTime(currentTimeFormatted);
 
+    setLoading(true);
+
     try {
       const formData = new FormData();
       formData.append("_method", "PUT");
@@ -269,7 +273,7 @@ const CreateSolat = () => {
       }
 
       await axios.post(
-        `http://127.0.0.1:8000/api/prayer-records/${todayRecord.id}`,
+        `${URL_SHOLAT}/${todayRecord.id}`,
         formData,
         {
           headers: {
@@ -284,6 +288,8 @@ const CreateSolat = () => {
       navigate(`/solat`);
     } catch (error) {
       message.error("Gagal menyimpan catatan solat.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -299,7 +305,7 @@ const CreateSolat = () => {
     <>
       {selectedPrayer === null && navigate(`/solat`)}
 
-      <div className="flex justify-center items-center min-h-screen px-4 sm:px-4 lg:px-4">
+      <div className="flex justify-center items-center py-4 px-4 sm:px-4 lg:px-4">
         <div className="bg-[#2A5D50] shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-sm sm:max-w-md lg:max-w-lg">
           {/* Header */}
           <div className="flex mb-4">

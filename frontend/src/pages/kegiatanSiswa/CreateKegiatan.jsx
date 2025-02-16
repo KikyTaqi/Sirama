@@ -18,6 +18,7 @@ import { useUser } from "../../components/UserContext";
 import { RiAddCircleFill } from "react-icons/ri";
 
 import axios from "axios";
+import { URL_KEGIATAN } from "../../utils/Endpoint";
 
 const { Option } = Select;
 
@@ -64,7 +65,7 @@ const CreateKegiatan = () => {
       }
 
       await axios.post(
-        `http://127.0.0.1:8000/api/kegiatan`,
+        URL_KEGIATAN,
         formData,
         {
           headers: {
@@ -101,7 +102,7 @@ const CreateKegiatan = () => {
     <>
       {/* {selectedPrayer === null && navigate(`/solat`)} */}
 
-      <div className="flex justify-center items-center min-h-screen px-4 sm:px-4 lg:px-4">
+      <div className="flex justify-center items-center py-4 px-4 sm:px-4 lg:px-4">
         <div className="bg-[#2A5D50] shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-sm sm:max-w-md lg:max-w-lg">
           {/* Header */}
           <div className="flex mb-4">

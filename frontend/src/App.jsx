@@ -1,14 +1,14 @@
 import "@ant-design/v5-patch-for-react-19";
 import React from "react";
-import { ConfigProvider } from "antd";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ConfigProvider, Spin } from "antd";
+import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 import "./App.css";
 
 // Components
 import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Footer from "./components/Footer";
-import { UserProvider } from "./components/UserContext";
+import { UserProvider, useUser } from "./components/UserContext";
 import ProtectedSiswa from "./components/ProtectedSiswa";
 import NotFound from "./components/NotFound";
 
@@ -46,23 +46,39 @@ function App() {
             itemActiveBg: "#1E3A34",
           },
           Select: {
-            selectorBg: '#4cb399',
+            selectorBg: "#4cb399",
             colorText: "#FFD700",
             optionSelectedBg: "#1E3A34",
             optionActiveBg: "#3e947e",
-          }
+          },
         },
       }}
     >
       <Router>
         <UserProvider>
-        <div className="fixed top-0 left-0 w-full z-50 bg-[#1e3a34] shadow-md">
-          <Header className="" />
-        </div>
-        <div className="bg-[#1e3a342f] min-h-screen">
-          <div className="px-6 py-5">
+          <AppContent />
+        </UserProvider>
+      </Router>
+    </ConfigProvider>
+  );
+}
+
+function AppContent() {
+  const { user, loadingUser } = useUser();
+
+  return (
+    <>
+      <div className="fixed top-0 left-0 w-full z-50 bg-[#1e3a34] shadow-md">
+        <Header className="" />
+      </div>
+      <div className="bg-[#1e3a342f] min-h-screen pt-16">
+        <div className="px-6 py-5">
+          {loadingUser ? (
+            <div className="w-[95vw] h-[50vh] flex justify-center items-center">
+              <Spin size="large" />
+            </div>
+          ) : (
             <Routes>
-              {/* Route untuk halaman login dan register */}
               <Route path="/" element={<Login />} />
               <Route path="/register" element={<Register />} />
 
@@ -71,39 +87,43 @@ function App() {
                 path="/*"
                 element={
                   <ProtectedRoute>
-                    <div className="pt-14">
-                      <div className="min-h-max my-5">
-                        {/* <ProtectedSiswa> */}
-                          <Routes>
-                              <Route path="/dashboard" element={<Dashboard />} />
-                              <Route path="/notifications" element={<Places />} />
-                              <Route path="/notifications/create" element={<CreatePlaces />} />
-                              <Route path="/notifications/:id" element={<UpdatePlaces />} />
-                              <Route path="/solat" element={<Solat />} />
-                              <Route path="/solat/create" element={<CreateSolat />} />
-                              <Route path="/kegiatan/create" element={<CreateKegiatan />} />
-                              <Route path="/kegiatan/kultum" element={<Kultum />} />
-                              <Route path="/kegiatan/kultum/create" element={<CreateKultum />} />
-                          </Routes>
-                        {/* </ProtectedSiswa> */}
-                        <Routes>
-                          <Route path="/guru/dashboard" element={<DashboardGuru />} />
-                        </Routes>
-                      </div>
-                    </div>
+                    {user?.role === "siswa" && <Outlet />}
+                    {user?.role === "guru" && <Outlet />}
                   </ProtectedRoute>
                 }
-              />
+              >
+                {/* Routes siswa */}
+                {user?.role === "siswa" && (
+                  <>
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="notifications" element={<Places />} />
+                    <Route path="solat" element={<Solat />} />
+                    <Route path="solat/create" element={<CreateSolat />} />
+                    <Route path="kegiatan/create" element={<CreateKegiatan />} />
+                    <Route path="kegiatan/kultum" element={<Kultum />} />
+                    <Route path="kegiatan/kultum/create" element={<CreateKultum />} />
+                  </>
+                )}
+
+                {/* Routes guru */}
+                {user?.role === "guru" && (
+                  <Route path="dashboard" element={<DashboardGuru />} />
+                )}
+
+                {/* Fallback untuk rute yang tidak cocok */}
+                <Route path="*" element={<NotFound />} />
+              </Route>
+
+              {/* Rute NotFound di luar kalau ada kesalahan */}
               <Route path="*" element={<NotFound />} />
             </Routes>
-          </div>
-
-          <Footer />
+          )}
         </div>
-        </UserProvider>
-      </Router>
-    </ConfigProvider>
+        <Footer />
+      </div>
+    </>
   );
 }
+
 
 export default App;
