@@ -28,12 +28,17 @@ const Solat = () => {
   const [loading, setLoading] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate();
-  
 
   const { user } = useUser();
 
   const prayerOrder = ["subuh", "dzuhur", "asar", "maghrib", "isya"];
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date();
+  const todayLocal =
+    today.getFullYear() +
+    "-" +
+    String(today.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(today.getDate()).padStart(2, "0");
 
   const BuatRowBaru = async () => {
     try {
@@ -69,7 +74,7 @@ const Solat = () => {
       const records = response.data;
       setAnu(records);
 
-      const todayRecord = records.find((item) => item.date === today);
+      const todayRecord = records.find((item) => item.date === todayLocal);
 
       if (!todayRecord) {
         console.log("Data hari ini kosong, membuat baris baru...");
@@ -97,13 +102,13 @@ const Solat = () => {
   };
 
   useEffect(() => {
-    const todayRecord = anu?.find((item) => item.date === today);
-  
+    const todayRecord = anu?.find((item) => item.date === todayLocal);
+
     if (todayRecord) {
       const currentPrayerIndex = prayerOrder.findIndex(
         (prayer) => todayRecord[`${prayer}_status`] === "belum"
       );
-  
+
       if (currentPrayerIndex !== -1) {
         const prayer = prayerOrder[currentPrayerIndex];
         setSelectedPrayer(prayer);
@@ -114,7 +119,6 @@ const Solat = () => {
       setSelectedPrayer(null);
     }
   }, [anu]);
-  
 
   useEffect(() => {
     if (user) {
@@ -149,7 +153,7 @@ const Solat = () => {
         <h2 className="text-2xl font-bold text-center text-[#FFD700] mb-6">
           Catatan Solat
         </h2>
-  
+
         {/* Status Salat */}
         {todayRecord ? (
           <div className="bg-[#1E4A40] p-4 rounded-lg shadow-inner">
@@ -166,7 +170,7 @@ const Solat = () => {
                     : status === "tidak"
                     ? "bg-red-600"
                     : "bg-gray-500";
-  
+
                 return (
                   <div
                     key={prayer}
@@ -184,9 +188,11 @@ const Solat = () => {
             </div>
           </div>
         ) : (
-          <p className="text-center text-white">Belum ada data untuk hari ini.</p>
+          <p className="text-center text-white">
+            Belum ada data untuk hari ini.
+          </p>
         )}
-  
+
         {/* Absen Solat / Semua Dicatat */}
         <div className="mt-6 text-center">
           {selectedPrayer === null ? (
@@ -208,7 +214,6 @@ const Solat = () => {
       </div>
     </div>
   );
-  
 };
 
 export default Solat;

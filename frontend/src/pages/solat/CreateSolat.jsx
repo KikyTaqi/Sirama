@@ -42,13 +42,19 @@ const CreateSolat = () => {
   const { user } = useUser();
 
   const prayerOrder = ["subuh", "dzuhur", "asar", "maghrib", "isya"];
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date();
+  const todayLocal =
+    today.getFullYear() +
+    "-" +
+    String(today.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(today.getDate()).padStart(2, "0");
 
   const BuatRowBaru = async () => {
     try {
       const formData = new FormData();
       formData.append("user_id", user?.id);
-      formData.append("date", today);
+      formData.append("date", todayLocal);
 
       await axios.post(URL_SHOLAT, formData, {
         headers: {
@@ -78,7 +84,7 @@ const CreateSolat = () => {
       const records = response.data;
       setAnu(records);
 
-      const todayRecord = records.find((item) => item.date === today);
+      const todayRecord = records.find((item) => item.date === todayLocal);
 
       if (!todayRecord) {
         console.log("Data hari ini kosong, membuat baris baru...");
@@ -180,7 +186,7 @@ const CreateSolat = () => {
   }, []);
 
   useEffect(() => {
-    const todayRecord = anu?.find((item) => item.date === today);
+    const todayRecord = anu?.find((item) => item.date === todayLocal);
 
     if (todayRecord) {
       const currentPrayerIndex = prayerOrder.findIndex(
@@ -237,7 +243,7 @@ const CreateSolat = () => {
   };
 
   const handleSubmit = async (values) => {
-    const todayRecord = anu.find((item) => item.date === today);
+    const todayRecord = anu.find((item) => item.date === todayLocal);
     if (!todayRecord) {
       message.error("Data hari ini belum ada!");
       return;
