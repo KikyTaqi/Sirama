@@ -190,28 +190,30 @@ const Dashboard = () => {
             Selamat Datang, {user?.name}!
           </h2>
           <table>
-            <tr>
-              <td>
-                <p className="text-sm text-white">Hari ini</p>
-              </td>
-              <td>
-                <p className="text-sm text-white px-5">:</p>
-              </td>
-              <td>
-                <p className="text-sm text-white">{formatDate}</p>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p className="text-sm text-white">Jam</p>
-              </td>
-              <td>
-                <p className="text-sm text-white px-5">:</p>
-              </td>
-              <td>
-                <p className="text-sm text-white">{formatTime}</p>
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <td>
+                  <p className="text-sm text-white">Hari ini</p>
+                </td>
+                <td>
+                  <p className="text-sm text-white px-5">:</p>
+                </td>
+                <td>
+                  <p className="text-sm text-white">{formatDate}</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p className="text-sm text-white">Jam</p>
+                </td>
+                <td>
+                  <p className="text-sm text-white px-5">:</p>
+                </td>
+                <td>
+                  <p className="text-sm text-white">{formatTime}</p>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
 
@@ -230,7 +232,7 @@ const Dashboard = () => {
           <div className="overflow-x-auto">
             <Table
               columns={columns}
-              dataSource={data}
+              dataSource={paginatedData}
               loading={loading}
               pagination={false}
               rowKey={(record) => record.id} // Pastikan setiap row memiliki key unik

@@ -158,7 +158,7 @@ const Kultum = () => {
           <div className="overflow-x-auto">
             <Table
               columns={columns}
-              dataSource={data}
+              dataSource={paginatedData}
               loading={loading}
               pagination={false}
               rowKey={(record) => record.id} // Pastikan setiap row memiliki key unik
