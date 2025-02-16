@@ -28,6 +28,7 @@ const Solat = () => {
   const [loading, setLoading] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate();
+  
 
   const { user } = useUser();
 
@@ -84,10 +85,8 @@ const Solat = () => {
         if (currentPrayerIndex !== -1) {
           const prayer = prayerOrder[currentPrayerIndex];
           setSelectedPrayer(prayer);
-          form.setFieldsValue({ prayer });
         } else {
           setSelectedPrayer(null);
-          form.setFieldsValue({ prayer: null });
         }
       }
     } catch (error) {
@@ -99,25 +98,23 @@ const Solat = () => {
 
   useEffect(() => {
     const todayRecord = anu?.find((item) => item.date === today);
-
+  
     if (todayRecord) {
       const currentPrayerIndex = prayerOrder.findIndex(
         (prayer) => todayRecord[`${prayer}_status`] === "belum"
       );
-
+  
       if (currentPrayerIndex !== -1) {
         const prayer = prayerOrder[currentPrayerIndex];
         setSelectedPrayer(prayer);
-        form.setFieldsValue({ prayer });
       } else {
         setSelectedPrayer(null);
-        form.setFieldsValue({ prayer: null });
       }
     } else {
       setSelectedPrayer(null);
-      form.setFieldsValue({ prayer: null });
     }
-  }, [anu, form]);
+  }, [anu]);
+  
 
   useEffect(() => {
     if (user) {
@@ -194,7 +191,7 @@ const Solat = () => {
         <div className="mt-6 text-center">
           {selectedPrayer === null ? (
             <p className="text-green-400 font-semibold">
-              Semua salat hari ini sudah dicatat!
+              Semua solat hari ini sudah dicatat!
             </p>
           ) : (
             <Link to={`/solat/create`}>
