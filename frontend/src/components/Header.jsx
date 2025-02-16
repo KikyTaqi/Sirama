@@ -1,15 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Drawer, Button, message, Skeleton } from "antd";
+import { Drawer, Button, message, Skeleton, Avatar } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logout } from "../api";
 import Typed from "typed.js";
 
-import { MenuOutlined } from "@ant-design/icons";
+import { MenuOutlined, UserOutlined } from "@ant-design/icons";
 import { TbArrowBadgeDown } from "react-icons/tb";
 import { HiOutlineLogin, HiOutlineLogout } from "react-icons/hi";
-import { useUser } from '../components/UserContext';
+import { useUser } from "../components/UserContext";
 
-import { FaPersonPraying, FaHouse, FaBookQuran, FaNoteSticky } from "react-icons/fa6";
+import {
+  FaPersonPraying,
+  FaHouse,
+  FaBookQuran,
+  FaNoteSticky,
+} from "react-icons/fa6";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -18,10 +23,9 @@ const Header = () => {
   const { user, loadingUser, fetchUser } = useUser();
   const el = useRef(null);
 
-
   useEffect(() => {
     const typed = new Typed(el.current, {
-      strings: ['Sirama', 'Selamat', 'menunaikan','ibadah','puasa.'],
+      strings: ["Sirama", "Selamat", "menunaikan", "ibadah", "puasa."],
       typeSpeed: 100,
       loop: true,
     });
@@ -32,16 +36,15 @@ const Header = () => {
     };
   }, []);
 
-
   const menuItems = [
     {
       name: "Dashboard",
-      icon: <FaHouse/>,
+      icon: <FaHouse />,
       path: "/dashboard",
     },
     {
       name: "Catatan Solat",
-      icon: <FaPersonPraying/>,
+      icon: <FaPersonPraying />,
       path: "/solat",
     },
     // {
@@ -51,12 +54,12 @@ const Header = () => {
     // },
     {
       name: "Kultum",
-      icon: <FaBookQuran/>,
+      icon: <FaBookQuran />,
       path: "/kegiatan/kultum",
     },
     {
       name: "Logout",
-      icon: <HiOutlineLogout />,
+      icon: <HiOutlineLogout className="text-xl" />,
       path: "#",
       logout: true,
     },
@@ -77,9 +80,7 @@ const Header = () => {
   };
 
   return (
-    <header
-      className="p-2 text-xl font-bold bg-[#1E3A34] text-[#FFD700]"
-    >
+    <header className="p-2 text-xl font-bold bg-[#1E3A34] text-[#FFD700]">
       <div className="px-10 flex justify-between items-center">
         <div className="flex items-center">
           <img src="/ketupat.gif" alt="ketupat" className="max-h-12" />
@@ -110,19 +111,32 @@ const Header = () => {
         {/* Profile User */}
         <div className="w-full">
           <div className="flex items-center space-x-4 p-2 mb-5">
-            <img
-              className="h-12 rounded-full"
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/FullMoon2010.jpg/1200px-FullMoon2010.jpg"
-              alt="User Avatar"
-            />
+            <div className="">
+              <Avatar
+                style={{
+                  backgroundColor: "#87d068",
+                }}
+                icon={<UserOutlined />}
+                size={50}
+              />
+            </div>
             <div>
               <h4 className="font-semibold text-lg text-[#FFD700] capitalize">
-                {loadingUser ? <Skeleton.Input active size="small" /> : user?.name || "Belum Login"}
+                {loadingUser ? (
+                  <Skeleton.Input active size="small" />
+                ) : (
+                  user?.name || "Belum Login"
+                )}
               </h4>
               <span className="text-sm tracking-wide flex items-center space-x-1">
                 <TbArrowBadgeDown className="text-green-600 text-2xl" />
-                {loadingUser ? <Skeleton.Input active size="small" className="py-2" /> : (<span className="text-[#FFD700] uppercase">{user?.kelas}</span>) || "Belum Login"}
-                
+                {loadingUser ? (
+                  <Skeleton.Input active size="small" className="py-2" />
+                ) : (
+                  <span className="text-[#FFD700] uppercase">
+                    {user?.kelas}
+                  </span>
+                )}
               </span>
             </div>
           </div>
@@ -135,7 +149,9 @@ const Header = () => {
                   backgroundColor: "#FFD700",
                   color: "#1E3A34",
                 }}
-                onClick={() => {setOpen(false)}}
+                onClick={() => {
+                  setOpen(false);
+                }}
               >
                 <Link
                   to={`/`}
@@ -145,7 +161,9 @@ const Header = () => {
                     color: "#1E3A34",
                   }}
                 >
-                  <span><HiOutlineLogin className="text-xl" /></span>
+                  <span>
+                    <HiOutlineLogin className="text-xl" />
+                  </span>
                   <span>Login</span>
                 </Link>
               </li>
@@ -157,7 +175,9 @@ const Header = () => {
                     <li
                       key={index}
                       className="rounded-md"
-                      onClick={() => {setOpen(false)}}
+                      onClick={() => {
+                        setOpen(false);
+                      }}
                       style={{
                         backgroundColor: isActive ? "#FFD700" : "transparent",
                         color: isActive ? "#1E3A34" : "#FFD700",
@@ -174,9 +194,7 @@ const Header = () => {
                           color: isActive ? "#1E3A34" : "#FFD700",
                         }}
                       >
-                        <span>
-                          {item.icon}
-                        </span>
+                        <span>{item.icon}</span>
                         <span>{item.name}</span>
                       </Link>
                     </li>

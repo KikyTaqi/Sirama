@@ -4,6 +4,7 @@ import axios from "axios";
 import { URL_USER, URL_KEGIATAN } from "../utils/Endpoint";
 import { Link } from "react-router-dom";
 import { RiAddCircleFill } from "react-icons/ri";
+import { FaCheck } from "react-icons/fa6";
 import { useUser } from "../components/UserContext";
 
 const Dashboard = () => {
@@ -143,10 +144,10 @@ const Dashboard = () => {
         return (
           <div
             className="truncate max-w-[15rem]"
-            title={filteredKultum.map((item) => item.tempat).join(", ")}
+            title={filteredKultum.map((item) => item.ringkasan).join(", ")}
           >
             {filteredKultum.length > 0 ? (
-              filteredKultum.map((item) => item.tempat).join(", ")
+              filteredKultum.map((item) => item.ringkasan).join(", ")
             ) : (
               <span>-</span>
             )}
@@ -181,6 +182,9 @@ const Dashboard = () => {
     month: "long",
     day: "numeric",
   });
+
+  const today = new Date().toISOString().split("T")[0]; // Ambil tanggal hari ini dalam format YYYY-MM-DD
+  const isTodayFilled = data.some((item) => item.date === today);
 
   return (
     <div className="flex justify-center items-center py-4 px-4">
@@ -218,17 +222,30 @@ const Dashboard = () => {
         </div>
 
         <Card title="Kegiatan" className="shadow-md max-w-screen">
-          <div className="flex justify-end">
-            <Link to="/kegiatan/create">
+          {!isTodayFilled && !loading ? (
+            <div className="flex justify-end">
+              <Link to="/kegiatan/create">
+                <Button
+                  type="secondary"
+                  className="!bg-amber-400 !font-semibold !text-white mb-2"
+                  icon={<RiAddCircleFill />}
+                >
+                  Tambah Kegiatan
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <div className="flex justify-end mb-2">
               <Button
-                type="secondary"
-                className="!bg-amber-400 !font-semibold !text-white mb-2"
-                icon={<RiAddCircleFill />}
-              >
-                Tambah Kegiatan
-              </Button>
-            </Link>
-          </div>
+                  type="secondary"
+                  className="!bg-[#1E3A34] !font-semibold !text-amber-300 mb-2"
+                  disabled
+                  icon={<FaCheck />}
+                >
+                  Sudah mengisi!
+                </Button>
+            </div>
+          )}
           <div className="overflow-x-auto">
             <Table
               columns={columns}
