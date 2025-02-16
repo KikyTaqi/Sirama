@@ -16,6 +16,7 @@ import imageCompression from "browser-image-compression";
 
 import { useUser } from "../../components/UserContext";
 import { FaPersonPraying } from "react-icons/fa6";
+import { MdOutlineRefresh  } from "react-icons/md";
 
 import axios from "axios";
 
@@ -28,6 +29,7 @@ const CreateSolat = () => {
   const [anu, setAnu] = useState(null);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [loadingMap, setLoadingMap] = useState(true);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [currentTime, setCurrentTime] = useState("");
@@ -103,14 +105,18 @@ const CreateSolat = () => {
   };
 
   const getLocation = () => {
+    setLoadingMap(true);
+    // console.log("ef");
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setLatitude(position.coords.latitude);
         setLongitude(position.coords.longitude);
+        setLoadingMap(false);
       },
       (error) => {
         console.error("Gagal mendapatkan lokasi:", error);
         message.error("Gagal mendapatkan lokasi.");
+        setLoadingMap(false);
         setIsModalVisible(true);
       }
     );
@@ -314,7 +320,7 @@ const CreateSolat = () => {
               <Form.Item
                 label={
                   <span className="!text-[#FFD700] font-semibold">
-                    Apakah solat?
+                    Apakah kamu solat?
                   </span>
                 }
                 name="status"
@@ -335,7 +341,7 @@ const CreateSolat = () => {
                 <Form.Item
                   label={
                     <span className="!text-[#FFD700] font-semibold">
-                      Foto Bukti
+                      Foto bukti
                     </span>
                   }
                   name="image"
@@ -380,18 +386,34 @@ const CreateSolat = () => {
                 </Form.Item>
               )}
               <div className="my-3">
-                <iframe
-                  width="100%"
-                  height="200"
-                  style={{ border: 0 }}
-                  className="rounded-xl"
-                  loading="lazy"
-                  allowFullScreen
-                  referrerPolicy="no-referrer-when-downgrade"
-                  src={`https://www.google.com/maps?q=${latitude},${longitude}&z=16&output=embed`}
-                />
+                {loadingMap ? (
+                  <div className="flex justify-center items-center h-[200px]">
+                    <Spin size="large" className="" />
+                  </div>
+                ) : (
+                  <iframe
+                    width="100%"
+                    height="200"
+                    style={{ border: 0 }}
+                    className="rounded-xl"
+                    loading="lazy"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src={`https://www.google.com/maps?q=${latitude},${longitude}&z=16&output=embed`}
+                  />
+                )}
               </div>
-              <div className="w-full flex justify-end">
+              <div className="w-full flex justify-between">
+                <Button
+                  type="secondary"
+                  className="!bg-amber-400 !font-semibold !text-white mt"
+                  loading={loadingMap}
+                  onClick={() => getLocation()}
+                  disabled={loadingMap}
+                  icon={<MdOutlineRefresh />}
+                >
+                  Refresh Lokasi
+                </Button>
                 <Button
                   type="secondary"
                   className="!bg-amber-400 !font-semibold !text-white"

@@ -21,7 +21,7 @@ const Header = () => {
 
   useEffect(() => {
     const typed = new Typed(el.current, {
-      strings: ['Sirama', 'Selamat', 'menunaikan','ibadah',' puasa.'],
+      strings: ['Sirama', 'Selamat', 'menunaikan','ibadah','puasa.'],
       typeSpeed: 100,
       loop: true,
     });
@@ -44,15 +44,15 @@ const Header = () => {
       icon: <FaPersonPraying/>,
       path: "/solat",
     },
-    {
-      name: "Tadarus",
-      icon: <FaBookQuran/>,
-      path: "/tadarus",
-    },
+    // {
+    //   name: "Tadarus",
+    //   icon: <FaBookQuran/>,
+    //   path: "/tadarus",
+    // },
     {
       name: "Kultum",
-      icon: <FaNoteSticky/>,
-      path: "/kultum",
+      icon: <FaBookQuran/>,
+      path: "/kegiatan/kultum",
     },
     {
       name: "Logout",
@@ -68,7 +68,7 @@ const Header = () => {
     try {
       await logout(); // Logout API
       localStorage.removeItem("token"); // Hapus token
-      message.error("Berhasil Logout.");
+      message.success("Berhasil Logout.");
       fetchUser();
       navigate("/"); // Redirect ke halaman login
     } catch (error) {
@@ -121,7 +121,7 @@ const Header = () => {
               </h4>
               <span className="text-sm tracking-wide flex items-center space-x-1">
                 <TbArrowBadgeDown className="text-green-600 text-2xl" />
-                <span className="text-[#FFD700]">Verified</span>
+                <span className="text-[#FFD700] uppercase">{user?.kelas}</span>
               </span>
             </div>
           </div>

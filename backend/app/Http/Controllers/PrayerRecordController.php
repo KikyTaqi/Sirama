@@ -61,7 +61,8 @@ class PrayerRecordController extends Controller
 
     public function getByUserId($user_id)
     {
-        $records = PrayerRecord::where('user_id', $user_id)->get();
+        $user = auth()->user();
+        $records = PrayerRecord::where('user_id', $user->id)->get();
 
         return response()->json($records);
     }

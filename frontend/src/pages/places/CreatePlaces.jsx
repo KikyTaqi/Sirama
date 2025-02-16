@@ -84,10 +84,11 @@ const CreatePlace = () => {
         formData.append("longitude", currentLocation.lng);
         if (file) formData.append("image", file);
 
-      await axios.post(URL_SHOLAT, formData);
-      message.success("Added successfully!");
-      navigate("/notifications");
-    } catch (error) {
+        await axios.post(URL_SHOLAT, formData);
+        message.success("Added successfully!");
+        navigate("/notifications");
+      }
+    }catch (error) {
       console.error("Error submitting data:", error.response?.data);
       message.error("Error submitting data");
     }

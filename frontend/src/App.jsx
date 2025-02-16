@@ -24,6 +24,11 @@ import Places from "./pages/places/Places";
 import CreatePlaces from "./pages/places/CreatePlaces";
 import UpdatePlaces from "./pages/places/UpdatePlaces";
 
+//kegiatan
+import CreateKegiatan from "./pages/kegiatanSiswa/CreateKegiatan";
+import Kultum from "./pages/kegiatanSiswa/kultum";
+import CreateKultum from "./pages/kegiatanSiswa/CreateKultum";
+
 function App() {
   return (
     <ConfigProvider
@@ -72,6 +77,9 @@ function App() {
                           <Route path="/notifications/:id" element={<UpdatePlaces />} />
                           <Route path="/solat" element={<Solat />} />
                           <Route path="/solat/create" element={<CreateSolat />} />
+                          <Route path="/kegiatan/create" element={<CreateKegiatan />} />
+                          <Route path="/kegiatan/kultum" element={<Kultum />} />
+                          <Route path="/kegiatan/kultum/create" element={<CreateKultum />} />
                         </Routes>
                       </div>
                     </div>
