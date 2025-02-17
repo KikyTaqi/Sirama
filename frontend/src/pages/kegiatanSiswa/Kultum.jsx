@@ -148,7 +148,7 @@ const Kultum = () => {
             <Link to="/kegiatan/kultum/create">
               <Button
                 type="secondary"
-                className="!bg-amber-400 !font-semibold !text-white mb-2"
+                className="!bg-amber-400 !font-semibold !text-[#2A5D50] mb-2"
                 icon={<RiAddCircleFill />}
               >
                 Tambah Kegiatan

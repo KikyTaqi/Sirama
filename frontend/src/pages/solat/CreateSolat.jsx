@@ -368,7 +368,7 @@ const CreateSolat = () => {
                     className="!text-white"
                   >
                     <Button
-                      className="!bg-amber-400 !font-semibold !text-white"
+                      className="!bg-amber-400 !font-semibold !text-[#2A5D50]"
                       type="secondary"
                       icon={<UploadOutlined />}
                     >
@@ -418,7 +418,7 @@ const CreateSolat = () => {
               <div className="w-full flex justify-between">
                 <Button
                   type="secondary"
-                  className="!bg-amber-400 !font-semibold !text-white mt"
+                  className="!bg-amber-400 !font-semibold !text-[#2A5D50] mt"
                   loading={loadingMap}
                   onClick={() => getLocation()}
                   disabled={loadingMap}
@@ -428,7 +428,7 @@ const CreateSolat = () => {
                 </Button>
                 <Button
                   type="secondary"
-                  className="!bg-amber-400 !font-semibold !text-white"
+                  className="!bg-amber-400 !font-semibold !text-[#2A5D50]"
                   htmlType="submit"
                   loading={loading}
                   disabled={loading}

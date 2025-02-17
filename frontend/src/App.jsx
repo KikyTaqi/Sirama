@@ -29,7 +29,7 @@ import UpdatePlaces from "./pages/places/UpdatePlaces";
 
 //kegiatan
 import CreateKegiatan from "./pages/kegiatanSiswa/CreateKegiatan";
-import Kultum from "./pages/kegiatanSiswa/kultum";
+import Kultum from "./pages/kegiatanSiswa/Kultum";
 import CreateKultum from "./pages/kegiatanSiswa/CreateKultum";
 
 function App() {
@@ -47,9 +47,9 @@ function App() {
           },
           Select: {
             selectorBg: "#4cb399",
-            colorText: "#FFD700",
-            optionSelectedBg: "#1E3A34",
-            optionActiveBg: "#3e947e",
+            colorText: "#2A5D50",
+            optionSelectedBg: "#FFD700",
+            optionActiveBg: "#fae986",
           },
         },
       }}

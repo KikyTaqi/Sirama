@@ -203,7 +203,7 @@ const Solat = () => {
             <Link to={`/solat/create`}>
               <Button
                 type="secondary"
-                className="!bg-amber-400 !font-semibold !text-white"
+                className="!bg-amber-400 !font-semibold !text-[#2A5D50]"
                 icon={<FaPersonPraying />}
               >
                 Absen Solat

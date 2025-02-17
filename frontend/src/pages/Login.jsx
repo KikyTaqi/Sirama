@@ -81,7 +81,7 @@ const Login = ({ setIsAuthenticated }) => {
                 htmlType="submit"
                 loading={loading}
                 disabled={loading}
-                className="w-full border-none !text-white hover:!text-gray-100 !bg-amber-300 hover:!bg-amber-200 py-2 rounded-md !font-semibold disabled:!bg-[#E5C100] disabled:!text-white"
+                className="w-full border-none !text-[#2A5D50] hover:!text-green-700 !bg-amber-300 hover:!bg-amber-200 py-2 rounded-md !font-semibold disabled:!bg-[#E5C100] disabled:!text-white"
               >
                 Login
               </Button>

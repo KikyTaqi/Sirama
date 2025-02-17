@@ -170,10 +170,11 @@ const Dashboard = () => {
   }, []);
 
   // Format waktu dan tanggal
-  const formatTime = currentTime.toLocaleTimeString("id-ID", {
+  const formatTime = currentTime.toLocaleTimeString("en-EN", {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
+    hour12: false,
   });
 
   const formatDate = currentTime.toLocaleDateString("id-ID", {
@@ -227,7 +228,7 @@ const Dashboard = () => {
               <Link to="/kegiatan/create">
                 <Button
                   type="secondary"
-                  className="!bg-amber-400 !font-semibold !text-white mb-2"
+                  className="!bg-amber-400 !font-semibold !text-[#2A5D50] mb-2"
                   icon={<RiAddCircleFill />}
                 >
                   Tambah Kegiatan
