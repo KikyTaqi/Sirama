@@ -53,7 +53,7 @@ const Solat = () => {
         },
       });
 
-      // console.log("Baris baru berhasil dibuat!");
+      // // // // console.log("Baris baru berhasil dibuat!");
     } catch (error) {
       console.error("Gagal membuat baris baru:", error.response?.data);
       message.error("Gagal membuat baris baru.");
@@ -78,11 +78,11 @@ const Solat = () => {
       const todayRecord = records.find((item) => item.date === todayLocal);
 
       if (!todayRecord) {
-        // console.log("Data hari ini kosong, membuat baris baru...");
+        // // // console.log("Data hari ini kosong, membuat baris baru...");
         await BuatRowBaru();
         await fetchPrayerStatus();
       } else {
-        // console.log("Data hari ini sudah ada:", todayRecord);
+        // // // console.log("Data hari ini sudah ada:", todayRecord);
         setTodayRecord(todayRecord);
         const currentPrayerIndex = prayerOrder.findIndex(
           (prayer) => todayRecord?.[`${prayer}_status`] === "belum"

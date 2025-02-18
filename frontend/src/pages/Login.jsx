@@ -28,9 +28,9 @@ const Login = ({ setIsAuthenticated }) => {
     }
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
+  // const onFinishFailed = (errorInfo) => {
+  //   console.log("Failed:", errorInfo);
+  // };
 
   const messageCoba = () => {
     message.success("config");
