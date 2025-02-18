@@ -10,6 +10,7 @@ import { useUser } from "../../components/UserContext";
 const DashboardGuru = () => {
   const [data, setData] = useState([]);
   const [siswa, setSiswa] = useState([]);
+  const [solat, setSolat] = useState([]);
   const [kultum, setKultum] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -58,12 +59,10 @@ const DashboardGuru = () => {
 
         // console.timeEnd("fetchPrayerStatus"); // Hentikan stopwatch
         setSiswa(siswaResponse.data);
-        // console.log(siswaResponse.data);
-
+        setSolat(responseSolat.data);
         setData(response.data);
-        // console.log(response.data);
-        setKultum(response.data);
-        console.log(responseSolat.data);
+        setKultum(responseKultum.data);
+        // console.log(responseSolat.data);
       } catch (error) {
         message.error("Gagal mengambil data kegiatan." + error);
       } finally {
