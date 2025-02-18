@@ -81,30 +81,19 @@ class PrayerRecordController extends Controller
         error_log(json_encode($request->all())); // Debugging
         
         $record->update([
-            "tarawih_status" => $request->input("terawih_status"),
-            "tarawih_latitude" => $request->input("terawih_latitude"),
-            "tarawih_longitude" => $request->input("terawih_longitude"),
-            "tarawih_time" => $request->input("terawih_time"),
+            "{$prayerTime}_status" => $request->input("{$prayerTime}_status"),
+            "{$prayerTime}_latitude" => $request->input("{$prayerTime}_latitude"),
+            "{$prayerTime}_longitude" => $request->input("{$prayerTime}_longitude"),
+            "{$prayerTime}_time" => $request->input("{$prayerTime}_time"),
         ]);
-        
-        if ($request->hasFile("terawih_image")) {
-            $imagePath = $request->file("terawih_image")->store('prayer_images', 'public');
-            $record->update(["tarawih_image" => $imagePath]);
+
+        if ($request->hasFile("{$prayerTime}_image")) {
+            $imagePath = $request->file("{$prayerTime}_image")->store('prayer_images', 'public');
+            $record->update(["{$prayerTime}_image" => $imagePath]);
         }
 
-        if ($request->filled("terawih_reason")) {
-            $record->update(["tarawih_reason" => $request->input("terawih_reason")]);
-        }
-
-        if ($request->kultum === 'iya') {
-            $kultum = Kultum::create([
-                'user_id' => $user->id,
-                'date' => $today,
-                'ramadhan' => $request->ramadhan,
-                'penceramah' => $request->penceramah,
-                'tempat' => $request->tempat,
-                'ringkasan' => $request->ringkasan,
-            ]);
+        if ($request->filled("{$prayerTime}_reason")) {
+            $record->update(["{$prayerTime}_reason" => $request->input("{$prayerTime}_reason")]);
         }
 
         error_log("PART3: ".$record);
@@ -147,5 +136,18 @@ class PrayerRecordController extends Controller
 
         return response()->json($statuses);
     }
+
+    public function solatKelas(Request $request)
+    {
+        $kelas = $request->query('kelas');
+        
+        $siswa = PrayerRecord::whereHas('user', function ($query) use ($kelas) {
+            $query->where('role', 'siswa')
+                ->where('kelas', $kelas);
+        })->get();
+
+        return response()->json($siswa);
+    }
+
 
 }

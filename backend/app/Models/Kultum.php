@@ -16,4 +16,9 @@ class Kultum extends Model
         'tempat',
         'ringkasan',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(Users::class, 'user_id', 'id');
+    }
 }
