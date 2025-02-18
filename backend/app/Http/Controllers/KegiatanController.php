@@ -96,17 +96,22 @@ class KegiatanController extends Controller
 {
     $kelas = $request->query('kelas');
     
-
-    // Log::info('Kelas yang diterima:', ['kelas' => $kelas]);
-    // Gunakan relasi yang sudah didefinisikan
     $siswa = Kegiatan::whereHas('user', function ($query) use ($kelas) {
         $query->where('role', 'siswa')
               ->where('kelas', $kelas);
     })->get();
 
-    // Log::info('Data siswa:', ['data' => $siswa]);
+    return response()->json($siswa);
+}
 
-    // $siswa = Kegiatan::all();
+    public function kultumKelas(Request $request)
+{
+    $kelas = $request->query('kelas');
+    
+    $siswa = Kultum::whereHas('user', function ($query) use ($kelas) {
+        $query->where('role', 'siswa')
+              ->where('kelas', $kelas);
+    })->get();
 
     return response()->json($siswa);
 }

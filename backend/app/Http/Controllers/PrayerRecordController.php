@@ -163,4 +163,17 @@ class PrayerRecordController extends Controller
         return response()->json($statuses);
     }
 
+    public function solatKelas(Request $request)
+    {
+        $kelas = $request->query('kelas');
+        
+        $siswa = PrayerRecord::whereHas('user', function ($query) use ($kelas) {
+            $query->where('role', 'siswa')
+                ->where('kelas', $kelas);
+        })->get();
+
+        return response()->json($siswa);
+    }
+
+
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, message, Spin, Table, Pagination, Flex, Tag } from "antd";
 import axios from "axios";
-import { URL_USER, URL_KEGIATAN, URL_SHOLAT } from "../../utils/Endpoint";
+import { URL_USER, URL_KEGIATAN, URL_SHOLAT, BASEURL } from "../../utils/Endpoint";
 import { Link } from "react-router-dom";
 import { RiAddCircleFill } from "react-icons/ri";
 import { FaCheck } from "react-icons/fa6";
@@ -26,23 +26,30 @@ const DashboardGuru = () => {
 
       try {
 
-        // const siswaResponse = await axios.get(`${URL_USER}/siswa-by-kelas`, {
-        //   params: { kelas: user?.kelas },
-        //   headers: {
-        //     Authorization: `Bearer ${localStorage.getItem("token")}`,
-        //   },
-        // });
-
-        const response = await axios.get(`http://127.0.0.1:8000/api/kegiatan-kelas?kelas=X PPLG 1`, {
-          // params: { kelas: user?.kelas },
+        const siswaResponse = await axios.get(`${URL_USER}/siswa-by-kelas`, {
+          params: { kelas: user?.kelas },
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
 
-        const responseSolat = await axios.get(
-          `${URL_SHOLAT}/user/${user?.id}`,
+        const response = await axios.get(`${BASEURL}/kegiatan/kegiatan-kelas`, {
+          params: { kelas: user?.kelas },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        const responseKultum = await axios.get(`${BASEURL}/kultum-kelas`, {
+          params: { kelas: user?.kelas },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        const responseSolat = await axios.get(`${BASEURL}/solat-kelas`,
           {
+            params: { kelas: user?.kelas },
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
@@ -50,12 +57,13 @@ const DashboardGuru = () => {
         );
 
         // console.timeEnd("fetchPrayerStatus"); // Hentikan stopwatch
-        // setSiswa(siswaResponse.data);
+        setSiswa(siswaResponse.data);
         // console.log(siswaResponse.data);
 
-        setData(response.data.kegiatan);
-        console.log(response.data.kegiatan);
-        setKultum(response.data.kultum);
+        setData(response.data);
+        // console.log(response.data);
+        setKultum(response.data);
+        console.log(responseSolat.data);
       } catch (error) {
         message.error("Gagal mengambil data kegiatan." + error);
       } finally {
