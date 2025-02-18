@@ -272,13 +272,13 @@ const CreateTerawih = () => {
       const formData = new FormData();
       formData.append("_method", "PUT");
       formData.append("prayer_time", "tarawih");
-      formData.append(`terawih_status`, values.status);
-      formData.append(`terawih_latitude`, latitude);
-      formData.append(`terawih_longitude`, longitude);
-      formData.append(`terawih_time`, currentTimeFormatted);
+      formData.append(`tarawih_status`, values.status);
+      formData.append(`tarawih_latitude`, latitude);
+      formData.append(`tarawih_longitude`, longitude);
+      formData.append(`tarawih_time`, currentTimeFormatted);
 
       if (values.status === "iya" && image) {
-        formData.append(`terawih_image`, image);
+        formData.append(`tarawih_image`, image);
         formData.append(`kultum`, values.kultum);
 
         if(values.kultum === "iya"){
@@ -289,7 +289,7 @@ const CreateTerawih = () => {
         }
       }
       if (values.status === "tidak") {
-        formData.append(`terawih_reason`, values.reason);
+        formData.append(`tarawih_reason`, values.reason);
         
         }
         for (let pair of formData.entries()) {
