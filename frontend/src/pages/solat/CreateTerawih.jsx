@@ -66,7 +66,7 @@ const CreateTerawih = () => {
         },
       });
 
-      console.log("Baris baru berhasil dibuat!");
+    //   console.log("Baris baru berhasil dibuat!");
     } catch (error) {
       message.error("Gagal membuat baris baru.");
     }
@@ -247,9 +247,9 @@ const CreateTerawih = () => {
   };
 
   const handleSubmit = async (values) => {
-    console.log("Submitting form:", values.reason);
+    // console.log("Submitting form:", values.reason);
     const todayRecord = anu.find((item) => item.date === todayLocal);
-    console.log("dataL "+JSON.stringify(todayRecord));
+    // console.log("dataL "+JSON.stringify(todayRecord));
     if (!todayRecord) {
       message.error("Data hari ini belum ada!");
       return;
@@ -292,9 +292,9 @@ const CreateTerawih = () => {
         formData.append(`tarawih_reason`, values.reason);
         
         }
-        for (let pair of formData.entries()) {
-            console.log("DATAAAA: "+pair[0] + ": " + pair[1]);
-        }
+        // for (let pair of formData.entries()) {
+        //     console.log("DATAAAA: "+pair[0] + ": " + pair[1]);
+        // }
 
 
       await axios.post(

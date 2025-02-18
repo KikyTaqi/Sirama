@@ -62,7 +62,7 @@ const CreateSolat = () => {
         },
       });
 
-      console.log("Baris baru berhasil dibuat!");
+      // console.log("Baris baru berhasil dibuat!");
     } catch (error) {
       console.error("Gagal membuat baris baru:", error.response?.data);
       message.error("Gagal membuat baris baru.");
@@ -87,11 +87,11 @@ const CreateSolat = () => {
       const todayRecord = records.find((item) => item.date === todayLocal);
 
       if (!todayRecord) {
-        console.log("Data hari ini kosong, membuat baris baru...");
+        // console.log("Data hari ini kosong, membuat baris baru...");
         await BuatRowBaru();
         await fetchPrayerStatus();
       } else {
-        console.log("Data hari ini sudah ada:", todayRecord);
+        // console.log("Data hari ini sudah ada:", todayRecord);
         const currentPrayerIndex = prayerOrder.findIndex(
           (prayer) => todayRecord?.[`${prayer}_status`] === "belum"
         );
@@ -227,11 +227,11 @@ const CreateSolat = () => {
       };
 
       const compressedFile = await imageCompression(file, options);
-      console.log(
-        "Ukuran setelah compress:",
-        compressedFile.size / 1024 / 1024,
-        "MB"
-      );
+      // console.log(
+      //   "Ukuran setelah compress:",
+      //   compressedFile.size / 1024 / 1024,
+      //   "MB"
+      // );
 
       setImage(compressedFile);
     } catch (error) {

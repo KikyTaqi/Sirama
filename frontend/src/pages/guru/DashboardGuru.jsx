@@ -63,7 +63,7 @@ const DashboardGuru = () => {
         setData(response.data);
         // console.log(response.data);
         setKultum(response.data);
-        console.log(responseSolat.data);
+        // console.log(responseSolat.data);
       } catch (error) {
         message.error("Gagal mengambil data kegiatan." + error);
       } finally {
