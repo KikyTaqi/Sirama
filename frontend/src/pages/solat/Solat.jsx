@@ -17,6 +17,7 @@ import { FaPersonPraying } from "react-icons/fa6";
 import { useUser } from "../../components/UserContext";
 
 import axios from "axios";
+import { URL_SHOLAT } from "../../utils/Endpoint";
 
 const { Option } = Select;
 
@@ -63,7 +64,7 @@ const Solat = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/prayer-records/user/${user?.id}`,
+        `${URL_SHOLAT}/user/${user?.id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

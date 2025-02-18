@@ -89,7 +89,7 @@ const Login = ({ setIsAuthenticated }) => {
           </Form>
 
           <p className="text-center text-white text-sm">
-            Don't have an account?{" "}
+            Belum punya akun?{" "}
             <Link to={`/register`} className="text-[#FFD700] hover:underline">
               Sign up
             </Link>

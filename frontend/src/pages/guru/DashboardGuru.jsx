@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Button, Card, message, Spin, Table, Pagination } from "antd";
+import { Button, Card, message, Spin, Table, Pagination, Flex, Tag } from "antd";
 import axios from "axios";
-import { URL_USER, URL_KEGIATAN } from "../../utils/Endpoint";
+import { URL_USER, URL_KEGIATAN, URL_SHOLAT } from "../../utils/Endpoint";
 import { Link } from "react-router-dom";
 import { RiAddCircleFill } from "react-icons/ri";
 import { FaCheck } from "react-icons/fa6";
@@ -9,6 +9,7 @@ import { useUser } from "../../components/UserContext";
 
 const DashboardGuru = () => {
   const [data, setData] = useState([]);
+  const [siswa, setSiswa] = useState([]);
   const [kultum, setKultum] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,13 +25,34 @@ const DashboardGuru = () => {
       setLoading(true);
 
       try {
-        const response = await axios.get(`${URL_KEGIATAN}/user/${user?.id}`, {
+
+        const siswaResponse = await axios.get(`${URL_USER}/siswa-by-kelas`, {
+          params: { kelas: user?.kelas },
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
 
+        const response = await axios.get(`${URL_KEGIATAN}/get-by-kelas`, {
+          params: { kelas: user?.kelas },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        const responseSolat = await axios.get(
+          `${URL_SHOLAT}/user/${user?.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
         // console.timeEnd("fetchPrayerStatus"); // Hentikan stopwatch
+        setSiswa(siswaResponse.data);
+        console.log(siswaResponse.data);
+
         setData(response.data.kegiatan);
         setKultum(response.data.kultum);
       } catch (error) {
@@ -70,17 +92,23 @@ const DashboardGuru = () => {
     //   width: "5%",
     //   className: "text-center",
     // },
+    // {
+    //   title: "Tanggal",
+    //   dataIndex: "date",
+    //   key: "date",
+    //   render: (text) =>
+    //     new Date(text).toLocaleDateString("id-ID", {
+    //       weekday: "long",
+    //       year: "numeric",
+    //       month: "long",
+    //       day: "numeric",
+    //     }),
+    //   width: "20%",
+    // },
     {
-      title: "Tanggal",
-      dataIndex: "date",
-      key: "date",
-      render: (text) =>
-        new Date(text).toLocaleDateString("id-ID", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }),
+      title: "Nama Siswa",
+      dataIndex: "name",
+      key: "name",
       width: "20%",
     },
     {
@@ -100,9 +128,9 @@ const DashboardGuru = () => {
       ),
     },
     {
-      title: "Alasan",
-      dataIndex: "reason",
-      key: "reason",
+      title: "Solat",
+      dataIndex: "",
+      key: "solat_status",
       render: (text) => (
         <div
           style={{
@@ -113,7 +141,9 @@ const DashboardGuru = () => {
           }}
           title={text}
         >
-          {text || "-"}
+          <Flex gap="4px 0">
+            <Tag color={``}></Tag>
+          </Flex>
         </div>
       ),
     },
@@ -157,7 +187,7 @@ const DashboardGuru = () => {
     },
   ];
 
-  const paginatedData = data.slice(
+  const paginatedData = siswa.slice(
     (currentPage - 1) * pageSize,
     currentPage * pageSize
   );
@@ -185,7 +215,7 @@ const DashboardGuru = () => {
   });
 
   const today = new Date().toISOString().split("T")[0]; // Ambil tanggal hari ini dalam format YYYY-MM-DD
-  const isTodayFilled = data.some((item) => item.date === today);
+  // const isTodayFilled = data.some((item) => item.date === today);
 
   return (
     <div className="flex justify-center items-center py-4 px-4">
@@ -223,7 +253,6 @@ const DashboardGuru = () => {
         </div>
 
         <Card title="Kegiatan" className="shadow-md max-w-screen">
-          
           <div className="overflow-x-auto">
             <Table
               columns={columns}

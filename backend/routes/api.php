@@ -16,11 +16,24 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function(Request $r) {
         return response()->json($r->user());
     });
+    Route::get('/user/siswa-by-kelas', function(Request $r) {
+        $kelas = $r->query('kelas'); // Ambil query param kelas dari URL
+
+        $siswa = \App\Models\Users::where('role', 'siswa')
+                    ->where('kelas', $kelas)
+                    ->get();
+
+        return response()->json($siswa);
+    });
+
+
     Route::apiResource('/prayer-records', PrayerRecordController::class);
     Route::get('/prayer-records/user/{user_id}', [PrayerRecordController::class, 'getByUserId']);
     
     Route::apiResource('/kegiatan', KegiatanController::class);
     Route::get('/kegiatan/user/{user_id}', [KegiatanController::class, 'getByUserId']);
+    Route::get('/kegiatan/user/get-by-kelas', [KegiatanController::class, 'getByUserKelas']);
+    
     Route::post('/kegiatan/kultum/add', [KegiatanController::class, 'storeKultum']);
     Route::get('/kegiatan/kultum/user/{user_id}', [KegiatanController::class, 'getKultumByUserId']);
 });

@@ -139,7 +139,7 @@ const Register = () => {
         </Form>
 
         <p className="text-center text-white text-sm">
-          Already have an account?{" "}
+          Sudah punya akun?{" "}
           <Link to={`/`} className="text-[#FFD700] hover:underline">
             Login
           </Link>

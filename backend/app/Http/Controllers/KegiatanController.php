@@ -91,4 +91,19 @@ class KegiatanController extends Controller
     
         return response()->json(['message' => 'Kegiatan added successfully']);
     }
+
+    public function getByUserKelas(Request $request)
+    {
+        $kelas = $request->query('kelas');
+
+        $siswa = Kegiatan::join('users', 'kegiatan.user_id', '=', 'users.id')
+                ->select('kegiatan.*', 'users.name as user_name', 'users.kelas as user_kelas', 'users.role as user_role') // Tambahkan role dan kelas untuk verifikasi
+                ->where('users.role', 'siswa')
+                ->where('users.kelas', $kelas)
+                ->get();
+
+
+        return response()->json($siswa);
+    }
+
 }
