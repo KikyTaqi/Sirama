@@ -31,7 +31,7 @@ const Solat = () => {
 
   const { user } = useUser();
 
-  const prayerOrder = ["subuh", "dzuhur", "asar", "maghrib", "isya"];
+  const prayerOrder = ["subuh", "dzuhur", "asar", "maghrib", "isya", "tarawih"];
   const today = new Date();
   const todayLocal =
     today.getFullYear() +
@@ -52,7 +52,7 @@ const Solat = () => {
         },
       });
 
-      console.log("Baris baru berhasil dibuat!");
+      // console.log("Baris baru berhasil dibuat!");
     } catch (error) {
       console.error("Gagal membuat baris baru:", error.response?.data);
       message.error("Gagal membuat baris baru.");
@@ -77,11 +77,11 @@ const Solat = () => {
       const todayRecord = records.find((item) => item.date === todayLocal);
 
       if (!todayRecord) {
-        console.log("Data hari ini kosong, membuat baris baru...");
+        // console.log("Data hari ini kosong, membuat baris baru...");
         await BuatRowBaru();
         await fetchPrayerStatus();
       } else {
-        console.log("Data hari ini sudah ada:", todayRecord);
+        // console.log("Data hari ini sudah ada:", todayRecord);
         setTodayRecord(todayRecord);
         const currentPrayerIndex = prayerOrder.findIndex(
           (prayer) => todayRecord?.[`${prayer}_status`] === "belum"
@@ -157,11 +157,12 @@ const Solat = () => {
         {/* Status Salat */}
         {todayRecord ? (
           <div className="bg-[#1E4A40] p-4 rounded-lg shadow-inner">
-            <h3 className="text-[#FFD700] font-semibold mb-3">
-              Status Salat Hari Ini
+            <h5 className="text-green-400 text-sm">*Bisa diisi <span className="text-[#FFD700]">sebelum</span> atau <span className="text-[#FFD700]">sesudah</span> solat</h5>
+            <h3 className="text-[#FFD700] font-semibold">
+              Status Solat Wajib Hari Ini
             </h3>
             <div className="space-y-2">
-              {prayerOrder.map((prayer) => {
+              {prayerOrder.map((prayer, index) => {
                 const status = todayRecord[`${prayer}_status`];
                 const statusText = getPrayerStatusText(status);
                 const statusColor =
@@ -172,16 +173,35 @@ const Solat = () => {
                     : "bg-gray-500";
 
                 return (
-                  <div
-                    key={prayer}
-                    className="flex justify-between items-center bg-[#2D6A5A] p-2 rounded-md"
-                  >
-                    <span className="capitalize text-white">{prayer}</span>
-                    <span
-                      className={`text-white px-3 py-1 rounded-md ${statusColor}`}
+                  <div key={index}>
+                    {prayer === "tarawih" && (
+                      <h3 className="text-[#FFD700] font-semibold">
+                        Status Solat Sunnah Hari Ini
+                      </h3>
+                    )}
+                    <div
+                      
+                      className={`${prayer === "tarawih" ?? "cursor-pointer"} flex justify-between items-center bg-[#2D6A5A] p-2 rounded-md`}
                     >
-                      {statusText}
-                    </span>
+                      <span className="capitalize text-white">{prayer}</span>
+                      <div className="flex justify-end">
+                        <span
+                          className={`text-white px-3 py-1 rounded-md ${statusColor}`}
+                        >
+                          {statusText}
+                        </span>
+                        {status !== "iya" && status !== "tidak" && prayer === "tarawih"  && (
+                          <Link to={`/solat/terawih/create`}>
+                            <Button
+                              type="secondary"
+                              className="!bg-amber-400 !font-semibold !text-[#2A5D50] ms-1"
+                            >
+                              Isi
+                            </Button>
+                          </Link>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 );
               })}
@@ -197,7 +217,7 @@ const Solat = () => {
         <div className="mt-6 text-center">
           {selectedPrayer === null ? (
             <p className="text-green-400 font-semibold">
-              Semua solat hari ini sudah dicatat!
+              Semua solat wajib hari ini sudah dicatat!
             </p>
           ) : (
             <Link to={`/solat/create`}>

@@ -151,12 +151,13 @@ const CreateKegiatan = () => {
                   rules={[
                     { required: true, message: "Masukkan alasan tidak puasa" },
                   ]}
-                >
+                  >
                   <Input.TextArea
                     rows={3}
+                    placeholder="Contoh: Sakit, haid, dll"
                     className="!bg-[#4cb399] border !border-[#FFD700] !text-[#FFD700] font-semibold !resize-none"
                     style={{ minHeight: "100px" }}
-                  />
+                    />
                 </Form.Item>
               )}
               <Form.Item
@@ -169,6 +170,7 @@ const CreateKegiatan = () => {
               >
                 <Input.TextArea
                   rows={3}
+                  placeholder="Contoh: 1 ayat, 2 surat, 1 juz, dll"
                   className="!bg-[#4cb399] border !border-[#FFD700] !text-[#FFD700] font-semibold !resize-none"
                   style={{ minHeight: "100px" }}
                 />

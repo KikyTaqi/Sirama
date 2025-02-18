@@ -11,24 +11,49 @@ const Register = () => {
   const onFinish = async (values) => {
     setLoading(true);
     try {
-      const { data } = await register(values);
+      const { data } = await register(values); // Panggil API untuk registrasi
       message.success("Registrasi berhasil! Silakan login.");
       navigate("/login"); // Redirect setelah register
     } catch (error) {
-      if (error.response && error.response.status === 422) {
-        // Tangkap error validasi dari Laravel
-        const errors = error.response.data.errors;
-
-        if (errors.nis) {
-          message.error("NIS sudah digunakan!")
-        }
-      } else if(error.response.status === 500) {
+      if (error.response) {
+        // Tangani error berdasarkan status kode
+        if (error.response.status === 422) {
+          // Tangkap error validasi dari Laravel
+          const errors = error.response.data.errors;
+  
+          // Cek jika ada error di masing-masing field dan tampilkan pesan error
+          if (errors.nis) {
+            message.error("NIS sudah digunakan!");
+          }
+          if (errors.name) {
+            message.error("Nama harus diisi!");
+          }
+          if (errors.kelas) {
+            message.error("Kelas harus diisi!");
+          }
+          if (errors.password) {
+            message.error("Password harus minimal 6 karakter!");
+          }
+  
+          // Kamu juga bisa menggunakan loop untuk menampilkan semua error field
+          // Object.keys(errors).forEach((field) => {
+          //   message.error(errors[field].join(', ')); // Menampilkan semua error terkait field
+          // });
+        } else if (error.response.status === 500) {
+          // Error server
           message.error("Server error!");
+        } else {
+          // Tangani error lain (misalnya network error)
+          message.error("Terjadi kesalahan, coba lagi!");
+        }
+      } else {
+        message.error("Terjadi kesalahan, coba lagi!");
       }
-    }finally{
-      setLoading(false);
+    } finally {
+      setLoading(false); // Hentikan loading setelah error atau sukses
     }
   };
+  
 
   return (
     <div className="flex justify-center items-center py-14 px-4 sm:px-6 lg:px-8">

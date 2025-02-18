@@ -21,6 +21,7 @@ import DashboardGuru from "./pages/guru/DashboardGuru";
 //solat
 import Solat from "./pages/solat/Solat";
 import CreateSolat from "./pages/solat/CreateSolat";
+import CreateTerawih from "./pages/solat/CreateTerawih";
 
 //places
 import Places from "./pages/places/Places";
@@ -99,6 +100,7 @@ function AppContent() {
                     <Route path="notifications" element={<Places />} />
                     <Route path="solat" element={<Solat />} />
                     <Route path="solat/create" element={<CreateSolat />} />
+                    <Route path="solat/terawih/create" element={<CreateTerawih />} />
                     <Route path="kegiatan/create" element={<CreateKegiatan />} />
                     <Route path="kegiatan/kultum" element={<Kultum />} />
                     <Route path="kegiatan/kultum/create" element={<CreateKultum />} />
