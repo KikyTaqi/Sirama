@@ -45,6 +45,13 @@ class PrayerRecord extends Model
         'isya_time',
         'isya_latitude',
         'isya_longitude',
+
+        'tarawih_status',
+        'tarawih_reason',
+        'tarawih_image',
+        'tarawih_time',
+        'tarawih_latitude',
+        'tarawih_longitude',
     ];
 
     public function user()

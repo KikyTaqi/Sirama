@@ -108,7 +108,7 @@ const CreateKultum = () => {
             rules={[{ required: true, message: "Masukkan nama penceramah!" }]}
           >
             <Input
-              placeholder="Masukkan nama penceramah"
+              placeholder="Contoh: Ust. Abdul Somad, Ustadz Adi Hidayat"
               className="w-full !bg-[#4cb399] !border-[#FFD700] !text-[#FFD700] font-semibold"
             />
           </Form.Item>
@@ -119,7 +119,7 @@ const CreateKultum = () => {
             rules={[{ required: true, message: "Masukkan tempat!" }]}
           >
             <Input
-              placeholder="Masukkan lokasi kultum, contoh: Masjid Al-Falah"
+              placeholder="Contoh: Masjid Al-Falah, Sekolah, Youtube, TV"
               className="w-full !bg-[#4cb399] !border-[#FFD700] !text-[#FFD700] font-semibold"
             />
           </Form.Item>

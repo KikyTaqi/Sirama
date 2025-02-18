@@ -9,6 +9,8 @@ import {
   message,
   Spin,
   Modal,
+  InputNumber,
+  DatePicker,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { IoIosArrowBack } from "react-icons/io";
@@ -24,10 +26,11 @@ import axios from "axios";
 
 const { Option } = Select;
 
-const CreateSolat = () => {
+const CreateTerawih = () => {
   const [form] = Form.useForm();
   const [selectedPrayer, setSelectedPrayer] = useState(null);
   const [status, setStatus] = useState(null);
+  const [statusTerawih, setStatusTerawih] = useState(null);
   const [anu, setAnu] = useState(null);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -37,11 +40,12 @@ const CreateSolat = () => {
   const [currentTime, setCurrentTime] = useState("");
   const [permissionStatus, setPermissionStatus] = useState("pending");
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [messageShown, setMessageShown] = useState(false);
   const navigate = useNavigate();
 
   const { user } = useUser();
 
-  const prayerOrder = ["subuh", "dzuhur", "asar", "maghrib", "isya"];
+  const prayerOrder = ["terawih"];
   const today = new Date();
   const todayLocal =
     today.getFullYear() +
@@ -64,7 +68,6 @@ const CreateSolat = () => {
 
       console.log("Baris baru berhasil dibuat!");
     } catch (error) {
-      console.error("Gagal membuat baris baru:", error.response?.data);
       message.error("Gagal membuat baris baru.");
     }
   };
@@ -86,18 +89,23 @@ const CreateSolat = () => {
 
       const todayRecord = records.find((item) => item.date === todayLocal);
 
+        if (todayRecord?.[`subuh_status`] === "belum" && !messageShown) {
+            navigate(`/solat`);
+            message.warning('Kamu harus mengisi data solat subuh dahulu!');
+            setMessageShown(true); // Menandai bahwa pesan sudah ditampilkan
+        }
+
       if (!todayRecord) {
-        console.log("Data hari ini kosong, membuat baris baru...");
         await BuatRowBaru();
         await fetchPrayerStatus();
       } else {
-        console.log("Data hari ini sudah ada:", todayRecord);
+        // console.log("TES: "+JSON.stringify(todayRecord));
         const currentPrayerIndex = prayerOrder.findIndex(
-          (prayer) => todayRecord?.[`${prayer}_status`] === "belum"
+          (prayer) => todayRecord?.[`terawih_status`] === "belum"
         );
 
         if (currentPrayerIndex !== -1) {
-          const prayer = prayerOrder[currentPrayerIndex];
+          const prayer = "terawih";
           setSelectedPrayer(prayer);
           form.setFieldsValue({ prayer });
         } else {
@@ -122,7 +130,6 @@ const CreateSolat = () => {
         setLoadingMap(false);
       },
       (error) => {
-        console.error("Gagal mendapatkan lokasi:", error);
         message.error("Gagal mendapatkan lokasi.");
         setLoadingMap(false);
         setIsModalVisible(true);
@@ -139,7 +146,7 @@ const CreateSolat = () => {
 
   useEffect(() => {
     if (!navigator.geolocation) {
-      message.error("Geolocation is not supported by your browser");
+      message.error("Geolocation tidak didukung di browser Anda.");
       return;
     }
 
@@ -178,7 +185,7 @@ const CreateSolat = () => {
           );
         };
       } catch (error) {
-        console.error("Error checking geolocation permission:", error);
+        message.error("Gagal mendapatkan izin lokasi.");
       }
     };
 
@@ -194,7 +201,7 @@ const CreateSolat = () => {
       );
 
       if (currentPrayerIndex !== -1) {
-        const prayer = prayerOrder[currentPrayerIndex];
+        const prayer = "terawih";
         setSelectedPrayer(prayer);
         form.setFieldsValue({ prayer });
       } else {
@@ -212,6 +219,9 @@ const CreateSolat = () => {
     form.setFieldsValue({ reason: "", image: null });
     setImage(null);
   };
+  const handleStatusTerawihChange = (value) => {
+    setStatusTerawih(value);
+  };
 
   const handleUpload = async (file) => {
     const isLt1M = file.size / 1024 / 1024 < 1; // Validasi ukuran awal kalau mau tetap ada
@@ -227,15 +237,9 @@ const CreateSolat = () => {
       };
 
       const compressedFile = await imageCompression(file, options);
-      console.log(
-        "Ukuran setelah compress:",
-        compressedFile.size / 1024 / 1024,
-        "MB"
-      );
 
       setImage(compressedFile);
     } catch (error) {
-      console.error("Gagal compress gambar:", error);
       message.error("Gagal compress gambar!");
     }
 
@@ -243,7 +247,9 @@ const CreateSolat = () => {
   };
 
   const handleSubmit = async (values) => {
+    console.log("Submitting form:", values.reason);
     const todayRecord = anu.find((item) => item.date === todayLocal);
+    console.log("dataL "+JSON.stringify(todayRecord));
     if (!todayRecord) {
       message.error("Data hari ini belum ada!");
       return;
@@ -265,18 +271,31 @@ const CreateSolat = () => {
     try {
       const formData = new FormData();
       formData.append("_method", "PUT");
-      formData.append("prayer_time", selectedPrayer);
-      formData.append(`${selectedPrayer}_status`, values.status);
-      formData.append(`${selectedPrayer}_latitude`, latitude);
-      formData.append(`${selectedPrayer}_longitude`, longitude);
-      formData.append(`${selectedPrayer}_time`, currentTimeFormatted);
+      formData.append("prayer_time", "tarawih");
+      formData.append(`terawih_status`, values.status);
+      formData.append(`terawih_latitude`, latitude);
+      formData.append(`terawih_longitude`, longitude);
+      formData.append(`terawih_time`, currentTimeFormatted);
 
       if (values.status === "iya" && image) {
-        formData.append(`${selectedPrayer}_image`, image);
+        formData.append(`terawih_image`, image);
+        formData.append(`kultum`, values.kultum);
+
+        if(values.kultum === "iya"){
+            formData.append(`ramadhan`, values.ramadhan);
+            formData.append(`penceramah`, values.penceramah);
+            formData.append(`tempat`, values.tempat);
+            formData.append(`ringkasan`, values.ringkasan);
+        }
       }
       if (values.status === "tidak") {
-        formData.append(`${selectedPrayer}_reason`, values.reason);
-      }
+        formData.append(`terawih_reason`, values.reason);
+        
+        }
+        for (let pair of formData.entries()) {
+            console.log("DATAAAA: "+pair[0] + ": " + pair[1]);
+        }
+
 
       await axios.post(
         `${URL_SHOLAT}/${todayRecord.id}`,
@@ -290,7 +309,7 @@ const CreateSolat = () => {
       );
 
       message.success("Catatan berhasil diperbarui!");
-      // fetchPrayerStatus();
+      fetchPrayerStatus();
       navigate(`/solat`);
     } catch (error) {
       message.error("Gagal menyimpan catatan solat.");
@@ -309,7 +328,7 @@ const CreateSolat = () => {
 
   return (
     <>
-      {selectedPrayer === null && navigate(`/solat`)}
+      {/* {selectedPrayer === null && navigate(`/solat`)} */}
 
       <div className="flex justify-center items-center py-4 px-4 sm:px-4 lg:px-4">
         <div className="bg-[#2A5D50] shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-sm sm:max-w-md lg:max-w-lg">
@@ -322,7 +341,7 @@ const CreateSolat = () => {
               }}
             />
             <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#FFD700] mb-3 w-full capitalize">
-              {selectedPrayer}
+                Terawih
             </h2>
           </div>
 
@@ -350,6 +369,7 @@ const CreateSolat = () => {
               </Form.Item>
 
               {status === "iya" && (
+                <>
                 <Form.Item
                   label={
                     <span className="!text-[#FFD700] font-semibold">
@@ -375,7 +395,87 @@ const CreateSolat = () => {
                       Upload Foto
                     </Button>
                   </Upload>
+
+                  </Form.Item>
+                <Form.Item
+                    label={
+                    <span className="!text-[#FFD700] font-semibold">
+                        Apakah mendengarkan ceramah/kultum? (jika ada)
+                    </span>
+                    }
+                    name="kultum"
+                >
+                    <Select
+                        onChange={handleStatusTerawihChange}
+                        placeholder="Ada/Tidak Ada"
+                        className="border !border-[#FFD700] !text-[#FFD700] rounded-md !bg-[#4cb399]"
+                        variant="borderless"
+                        >
+                        <Option value="iya">Iya</Option>
+                        <Option value="tidak">Tidak</Option>
+                    </Select>
                 </Form.Item>
+                {statusTerawih === "iya" && (
+                    <>
+                  <Form.Item
+                    label={
+                      <span className="text-[#FFD700] font-semibold">
+                        Ramadhan hari ke-
+                      </span>
+                    }
+                    name="ramadhan"
+                    rules={[{ required: true, message: "Masukkan nomor Ramadhan!" }]}
+                  >
+                    <InputNumber
+                      placeholder="Contoh: 3, 6, 7"
+                      className="w-full !bg-[#4cb399] !border-[#FFD700] !text-[#FFD700] font-semibold"
+                      style={{ width: '100%', color: '#FFD700' }}
+                      min={1}
+                      max={30}
+                      // controls={false} // Ini biar tombol up/down di samping ilang, opsional
+                    />
+                  </Form.Item>
+        
+                  <Form.Item
+                    label={
+                      <span className="text-[#FFD700] font-semibold">Penceramah</span>
+                    }
+                    name="penceramah"
+                    rules={[{ required: true, message: "Masukkan nama penceramah!" }]}
+                  >
+                    <Input
+                      placeholder="Contoh: Ust. Abdul Somad, Ustadz Adi Hidayat"
+                      className="w-full !bg-[#4cb399] !border-[#FFD700] !text-[#FFD700] font-semibold"
+                    />
+                  </Form.Item>
+        
+                  <Form.Item
+                    label={<span className="text-[#FFD700] font-semibold">Tempat</span>}
+                    name="tempat"
+                    rules={[{ required: true, message: "Masukkan tempat!" }]}
+                  >
+                    <Input
+                      placeholder="Contoh: Masjid Al-Falah, Sekolah, Youtube, TV"
+                      className="w-full !bg-[#4cb399] !border-[#FFD700] !text-[#FFD700] font-semibold"
+                    />
+                  </Form.Item>
+        
+                  <Form.Item
+                    label={
+                      <span className="text-[#FFD700] font-semibold">Ringkasan</span>
+                    }
+                    name="ringkasan"
+                    rules={[{ required: true, message: "Masukkan ringkasan!" }]}
+                  >
+                    <Input.TextArea
+                      rows={4}
+                      placeholder="Tulis ringkasan kultum, misal: Tema kultum tentang keutamaan sedekah..."
+                      className="w-full !bg-[#4cb399] !border-[#FFD700] !text-[#FFD700] font-semibold !resize-none"
+                    />
+                  </Form.Item>
+                  </>
+                )}
+                </>
               )}
 
               {status === "tidak" && (
@@ -469,4 +569,4 @@ const CreateSolat = () => {
   );
 };
 
-export default CreateSolat;
+export default CreateTerawih;

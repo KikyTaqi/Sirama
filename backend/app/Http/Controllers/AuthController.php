@@ -13,12 +13,20 @@ class AuthController extends Controller
     // REGISTER
     public function register(Request $request)
     {
-        $request->validate([
+        $validator = $request->validate([
             'nis' => 'required|string|max:255|unique:users',
             'name' => 'required|string|max:255',
             'kelas' => 'required|string|max:255',
             'password' => 'required|string|min:6',
         ]);
+
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'message' => 'Validation failed',
+        //         'errors' => $validator->errors()
+        //     ], 422); // Status 422 untuk unprocessable entity
+        // }
 
         $user = Users::create([
             'nis' => $request->nis,
