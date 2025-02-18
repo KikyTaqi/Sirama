@@ -26,15 +26,15 @@ const DashboardGuru = () => {
 
       try {
 
-        const siswaResponse = await axios.get(`${URL_USER}/siswa-by-kelas`, {
-          params: { kelas: user?.kelas },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        // const siswaResponse = await axios.get(`${URL_USER}/siswa-by-kelas`, {
+        //   params: { kelas: user?.kelas },
+        //   headers: {
+        //     Authorization: `Bearer ${localStorage.getItem("token")}`,
+        //   },
+        // });
 
-        const response = await axios.get(`${URL_KEGIATAN}/get-by-kelas`, {
-          params: { kelas: user?.kelas },
+        const response = await axios.get(`http://127.0.0.1:8000/api/kegiatan-kelas?kelas=X PPLG 1`, {
+          // params: { kelas: user?.kelas },
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -50,10 +50,11 @@ const DashboardGuru = () => {
         );
 
         // console.timeEnd("fetchPrayerStatus"); // Hentikan stopwatch
-        setSiswa(siswaResponse.data);
-        console.log(siswaResponse.data);
+        // setSiswa(siswaResponse.data);
+        // console.log(siswaResponse.data);
 
         setData(response.data.kegiatan);
+        console.log(response.data.kegiatan);
         setKultum(response.data.kultum);
       } catch (error) {
         message.error("Gagal mengambil data kegiatan." + error);

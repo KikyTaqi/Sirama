@@ -32,7 +32,8 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::apiResource('/kegiatan', KegiatanController::class);
     Route::get('/kegiatan/user/{user_id}', [KegiatanController::class, 'getByUserId']);
-    Route::get('/kegiatan/user/get-by-kelas', [KegiatanController::class, 'getByUserKelas']);
+
+    Route::get('/kegiatan-kelas', [KegiatanController::class, 'kegiatanKelas']);
     
     Route::post('/kegiatan/kultum/add', [KegiatanController::class, 'storeKultum']);
     Route::get('/kegiatan/kultum/user/{user_id}', [KegiatanController::class, 'getKultumByUserId']);

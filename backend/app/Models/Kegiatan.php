@@ -15,4 +15,9 @@ class Kegiatan extends Model
         'reason',
         'tadarus',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(Users::class, 'user_id', 'id');
+    }
 }

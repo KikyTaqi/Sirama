@@ -23,4 +23,9 @@ class Users extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function kegiatan()
+    {
+        return $this->hasMany(Kegiatan::class, 'user_id', 'id');
+    }
 }
