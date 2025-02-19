@@ -197,7 +197,7 @@ const Dashboard = () => {
     <div className="flex justify-center items-center py-4 px-4">
       <div className="w-full lg:max-w-4xl">
         <div className="bg-[#1E3A34] p-4 rounded-md mb-4 shadow-md">
-          <h2 className="text-2xl font-semibold text-[#FFD700] mb-3">
+          <h2 className="text-2xl font-semibold text-[#FFD700] mb-3 capitalize">
             Selamat Datang, {user?.name}!
           </h2>
           <table>
