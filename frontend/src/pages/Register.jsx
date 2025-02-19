@@ -129,18 +129,18 @@ const Register = () => {
               <Select.Option value="X TE 3">X TE 3</Select.Option>
               <Select.Option value="X TKI 1">X TKI 1</Select.Option>
               <Select.Option value="X TKI 2">X TKI 2</Select.Option>
-              <Select.Option value="XI TO 1">XI TO 1</Select.Option>
-              <Select.Option value="XI TO 2">XI TO 2</Select.Option>
-              <Select.Option value="XI TO 3">XI TO 3</Select.Option>
-              <Select.Option value="XI TJKT 1">XI TJKT 1</Select.Option>
-              <Select.Option value="XI TJKT 2">XI TJKT 2</Select.Option>
-              <Select.Option value="XI TJKT 3">XI TJKT 3</Select.Option>
+              <Select.Option value="XI TKR 1">XI TKR 1</Select.Option>
+              <Select.Option value="XI TKR 2">XI TKR 2</Select.Option>
+              <Select.Option value="XI TKR 3">XI TKR 3</Select.Option>
+              <Select.Option value="XI TKJ 1">XI TKJ 1</Select.Option>
+              <Select.Option value="XI TKJ 2">XI TKJ 2</Select.Option>
+              <Select.Option value="XI TKJ 3">XI TKJ 3</Select.Option>
               <Select.Option value="XI PG 1">XI PG 1</Select.Option>
               <Select.Option value="XI RPL 1">XI RPL 1</Select.Option>
               <Select.Option value="XI RPL 2">XI RPL 2</Select.Option>
-              <Select.Option value="XI TE 1">XI TE 1</Select.Option>
-              <Select.Option value="XI TE 2">XI TE 2</Select.Option>
-              <Select.Option value="XI TE 3">XI TE 3</Select.Option>
+              <Select.Option value="XI TEI 1">XI TEI 1</Select.Option>
+              <Select.Option value="XI TEI 2">XI TEI 2</Select.Option>
+              <Select.Option value="XI TEI 3">XI TEI 3</Select.Option>
               <Select.Option value="XI TKI 1">XI TKI 1</Select.Option>
               <Select.Option value="XI TKI 2">XI TKI 2</Select.Option>
             </Select>
