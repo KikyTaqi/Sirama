@@ -64,7 +64,8 @@ class PrayerRecordController extends Controller
     {
         $user = auth()->user();
         $records = PrayerRecord::where('user_id', $user->id)->get();
-
+        error_log($user);
+        error_log($records);
         return response()->json($records);
     }
 

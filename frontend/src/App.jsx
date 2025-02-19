@@ -20,6 +20,8 @@ import DashboardGuru from "./pages/guru/DashboardGuru";
 
 //solat
 import Solat from "./pages/solat/Solat";
+import SolatGuru from "./pages/guru/solat/SolatGuru";
+import DetailSolatGuru from "./pages/guru/solat/DetailSolatGuru";
 import CreateSolat from "./pages/solat/CreateSolat";
 import CreateTerawih from "./pages/solat/CreateTerawih";
 
@@ -109,7 +111,11 @@ function AppContent() {
 
                 {/* Routes guru */}
                 {user?.role === "guru" && (
-                  <Route path="dashboard" element={<DashboardGuru />} />
+                  <>
+                    <Route path="dashboard" element={<DashboardGuru />} />
+                    <Route path="solat" element={<SolatGuru />} />
+                    <Route path="solat/detail/:id" element={<DetailSolatGuru />} />
+                  </>
                 )}
 
                 {/* Fallback untuk rute yang tidak cocok */}

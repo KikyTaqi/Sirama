@@ -81,9 +81,12 @@ const Header = () => {
 
   return (
     <header className="p-2 text-xl font-bold bg-[#1E3A34] text-[#FFD700]">
-      <div className="px-10 flex justify-between items-center">
+      <div className="px-7 flex justify-between items-center">
         <div className="flex items-center">
-          <img src="/ketupat.gif" alt="ketupat" className="max-h-12" />
+          <div className="flex">
+            <img src="/smk.png" alt="logo" className="max-h-12 py-1 me-2" />
+            <img src="/ketupat.gif" alt="ketupat" className="max-h-12" />
+          </div>
           <span ref={el} />
         </div>
         <Button

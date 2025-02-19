@@ -29,6 +29,7 @@ const CreateKegiatan = () => {
   const [anu, setAnu] = useState(null);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [currentTime, setCurrentTime] = useState("");
@@ -39,7 +40,6 @@ const CreateKegiatan = () => {
   const { user } = useUser();
 
   const prayerOrder = ["subuh", "dzuhur", "asar", "maghrib", "isya"];
-  const today = new Date().toISOString().split("T")[0];
 
   const handleSubmit = async (values) => {
     setLoading(true);
@@ -64,23 +64,19 @@ const CreateKegiatan = () => {
         formData.append("reason", values.reason);
       }
 
-      await axios.post(
-        URL_KEGIATAN,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      await axios.post(URL_KEGIATAN, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       // fetchPrayerStatus();
       navigate(`/dashboard`);
       message.success("Berhasil menyimpan kegiatan!");
     } catch (error) {
       message.error("Gagal menyimpan kegiatan!.");
-    } finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -90,17 +86,53 @@ const CreateKegiatan = () => {
     form.setFieldsValue({ reason: "" });
   };
 
-  // if (loading) {
-  //   return (
-  //     <div className="w-[95vw] h-[50vh] flex justify-center items-center">
-  //       <Spin size="large" />
-  //     </div>
-  //   );
-  // }
+  useEffect(() => {
+    if (!user?.id) return;
+    const fetchPrayerStatus = async () => {
+      // console.time("fetchPrayerStatus"); // Mulai stopwatch
+      setLoading(true);
+
+      try {
+        const response = await axios.get(`${URL_KEGIATAN}/user/${user?.id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        // console.timeEnd("fetchPrayerStatus"); // Hentikan stopwatch
+        setData(response.data.kegiatan);
+      } catch (error) {
+        message.error("Gagal mengambil data kegiatan." + error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPrayerStatus();
+  }, [user]);
+
+  const today = new Date(); // Ambil tanggal hari ini dalam format YYYY-MM-DD
+  const todayLocal =
+    today.getFullYear() +
+    "-" +
+    String(today.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(today.getDate()).padStart(2, "0");
+  const isTodayFilled = data.some((item) => item.date === todayLocal);
+
+  if (loading) {
+    return (
+      <div className="w-[95vw] h-[50vh] flex justify-center items-center">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <>
       {/* {selectedPrayer === null && navigate(`/solat`)} */}
+
+      {isTodayFilled && navigate('/dashboard')}
 
       <div className="flex justify-center items-center py-4 px-4 sm:px-4 lg:px-4">
         <div className="bg-[#2A5D50] shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-sm sm:max-w-md lg:max-w-lg">
@@ -151,13 +183,13 @@ const CreateKegiatan = () => {
                   rules={[
                     { required: true, message: "Masukkan alasan tidak puasa" },
                   ]}
-                  >
+                >
                   <Input.TextArea
                     rows={3}
                     placeholder="Contoh: Sakit, haid, dll"
                     className="!bg-[#4cb399] border !border-[#FFD700] !text-[#FFD700] font-semibold !resize-none"
                     style={{ minHeight: "100px" }}
-                    />
+                  />
                 </Form.Item>
               )}
               <Form.Item
@@ -183,7 +215,7 @@ const CreateKegiatan = () => {
                   htmlType="submit"
                   loading={loading}
                   disabled={loading}
-                  icon={<RiAddCircleFill className=""/>}
+                  icon={<RiAddCircleFill className="" />}
                 >
                   Tambah
                 </Button>

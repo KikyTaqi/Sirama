@@ -48,7 +48,7 @@ const Login = ({ setIsAuthenticated }) => {
             name="login"
             initialValues={{ remember: true }}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
+            // onFinishFailed={onFinishFailed}
             layout="vertical"
           >
             <Form.Item

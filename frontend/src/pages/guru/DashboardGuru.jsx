@@ -1,32 +1,43 @@
-import React, { useState, useEffect } from "react";
-import { Button, Card, message, Spin, Table, Pagination, Flex, Tag } from "antd";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  Card,
+  message,
+  Table,
+  Pagination,
+  Tag,
+  Input,
+  Space,
+  Button,
+  ConfigProvider,
+} from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
-import { URL_USER, URL_KEGIATAN, URL_SHOLAT, BASEURL } from "../../utils/Endpoint";
-import { Link } from "react-router-dom";
-import { RiAddCircleFill } from "react-icons/ri";
-import { FaCheck } from "react-icons/fa6";
+import { URL_USER, BASEURL } from "../../utils/Endpoint";
 import { useUser } from "../../components/UserContext";
 
 const DashboardGuru = () => {
-  const [data, setData] = useState([]);
   const [siswa, setSiswa] = useState([]);
-  const [solat, setSolat] = useState([]);
-  const [kultum, setKultum] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [pageSize, setPageSize] = useState(5); // Jumlah data per halaman
+  const searchInput = useRef(null);
+  const today = new Date();
+  const todayLocal =
+    today.getFullYear() +
+    "-" +
+    String(today.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(today.getDate()).padStart(2, "0");
 
   const { user } = useUser();
 
   useEffect(() => {
     if (!user?.id) return;
-    const fetchPrayerStatus = async () => {
-      // console.time("fetchPrayerStatus"); // Mulai stopwatch
+
+    const fetchData = async () => {
       setLoading(true);
-
       try {
-
         const siswaResponse = await axios.get(`${URL_USER}/siswa-by-kelas`, {
           params: { kelas: user?.kelas },
           headers: {
@@ -34,21 +45,22 @@ const DashboardGuru = () => {
           },
         });
 
-        const response = await axios.get(`${BASEURL}/kegiatan/kegiatan-kelas`, {
+        const solatResponse = await axios.get(`${BASEURL}/solat-kelas`, {
           params: { kelas: user?.kelas },
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
 
-        const responseKultum = await axios.get(`${BASEURL}/kultum-kelas`, {
+        const kultumResponse = await axios.get(`${BASEURL}/kultum-kelas`, {
           params: { kelas: user?.kelas },
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
 
-        const responseSolat = await axios.get(`${BASEURL}/solat-kelas`,
+        const kegiatanResponse = await axios.get(
+          `${BASEURL}/kegiatan/kegiatan-kelas`,
           {
             params: { kelas: user?.kelas },
             headers: {
@@ -57,157 +69,56 @@ const DashboardGuru = () => {
           }
         );
 
-        // console.timeEnd("fetchPrayerStatus"); // Hentikan stopwatch
-        setSiswa(siswaResponse.data);
-        setSolat(responseSolat.data);
-        setData(response.data);
-        setKultum(responseKultum.data);
-        // console.log(responseSolat.data);
+        const solatHariIni = solatResponse.data.filter(
+          (solat) => solat.date === todayLocal
+        );
+        const kultumHariIni = kultumResponse.data.filter(
+          (kultum) => kultum.date === todayLocal
+        );
+        const kegiatanHariIni = kegiatanResponse.data.filter(
+          (kegiatan) => kegiatan.date === todayLocal
+        );
+
+        const siswaWithData = siswaResponse.data.map((siswaItem) => {
+          const solatItem = solatHariIni.find(
+            (solat) => solat.user_id === siswaItem.id
+          );
+          const kultumItems = kultumHariIni.filter(
+            (kultum) => kultum.user_id === siswaItem.id
+          );
+          const kegiatanItem = kegiatanHariIni.find(
+            (kegiatan) => kegiatan.user_id === siswaItem.id
+          );
+
+          return {
+            ...siswaItem,
+            solat: solatItem || {},
+            kultum: kultumItems,
+            puasa: kegiatanItem?.puasa || "Belum Mengisi", // Pakai "-" kalau datanya ga ada
+            tadarus: kegiatanItem?.tadarus || "-", // Pastikan ini ada di API kegiatan
+          };
+        });
+
+        setSiswa(siswaWithData);
+        console.log(siswaWithData);
       } catch (error) {
-        message.error("Gagal mengambil data kegiatan." + error);
+        message.error("Gagal mengambil data: " + error.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPrayerStatus();
+    fetchData();
   }, [user]);
-
-  // Fetch data dari API
-  // useEffect(() => {
-  //   // Contoh data statis
-  //   const fetchData = [
-  //     { kultum: "John Doe", puasa: "Puasa", uraian: "Admin", tanggal: "3 Maret 2025" },
-  //     { kultum: "Jane Smith", puasa: "Tidak Puasa", uraian: "User", tanggal: "4 Maret 2025" },
-  //     { kultum: "User 3", puasa: "Puasa", uraian: "User 3", tanggal: "5 Maret 2025" },
-  //     { kultum: "User 4", puasa: "Tidak Puasa", uraian: "User 4", tanggal: "6 Maret 2025" },
-  //     { kultum: "User 5", puasa: "Puasa", uraian: "User 5", tanggal: "7 Maret 2025" },
-  //     { kultum: "User 6", puasa: "Puasa", uraian: "User 6", tanggal: "8 Maret 2025" },
-  //     { kultum: "User 7", puasa: "Puasa", uraian: "User 7", tanggal: "9 Maret 2025" },
-  //     { kultum: "User 8", puasa: "Tidak Puasa", uraian: "User 8", tanggal: "10 Maret 2025" },
-  //     { kultum: "User 9", puasa: "Puasa", uraian: "User 9", tanggal: "11 Maret 2025" },
-  //     { kultum: "User 10", puasa: "Tidak Puasa", uraian: "User 10", tanggal: "12 Maret 2025" },
-  //   ];
-
-  //   setData(fetchData);
-  // }, []);
-
-  const columns = [
-    // {
-    //   title: "NO",
-    //   key: "index",
-    //   render: (_, __, index) => (currentPage - 1) * pageSize + index + 1, // Nomor otomatis
-    //   width: "5%",
-    //   className: "text-center",
-    // },
-    // {
-    //   title: "Tanggal",
-    //   dataIndex: "date",
-    //   key: "date",
-    //   render: (text) =>
-    //     new Date(text).toLocaleDateString("id-ID", {
-    //       weekday: "long",
-    //       year: "numeric",
-    //       month: "long",
-    //       day: "numeric",
-    //     }),
-    //   width: "20%",
-    // },
-    {
-      title: "Nama Siswa",
-      dataIndex: "name",
-      key: "name",
-      width: "20%",
-    },
-    {
-      title: "Puasa",
-      dataIndex: "puasa",
-      key: "puasa",
-      width: "10%",
-      className: "text-center",
-      render: (text) => (
-        <span
-          className={`
-              ${text === "iya" ? "bg-[#2E7D32]" : "bg-[#D32F2F]"}
-              text-white py-1 px-3 rounded capitalize`}
-        >
-          {text}
-        </span>
-      ),
-    },
-    {
-      title: "Solat",
-      dataIndex: "",
-      key: "solat_status",
-      render: (text) => (
-        <div
-          style={{
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            maxWidth: "15rem",
-          }}
-          title={text}
-        >
-          <Flex gap="4px 0">
-            <Tag color={``}></Tag>
-          </Flex>
-        </div>
-      ),
-    },
-    {
-      title: "Uraian Tadarus",
-      dataIndex: "tadarus",
-      key: "tadarus",
-      render: (text) => (
-        <div
-          style={{
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            maxWidth: "15rem",
-          }}
-          title={text}
-        >
-          {text || "-"}
-        </div>
-      ),
-    },
-    {
-      title: "Catatan Ceramah/Kultum",
-      dataIndex: "date", // Gunakan date dari data kegiatan
-      key: "kultum",
-      render: (date) => {
-        const filteredKultum = kultum.filter((item) => item.date === date);
-        return (
-          <div
-            className="truncate max-w-[15rem]"
-            title={filteredKultum.map((item) => item.ringkasan).join(", ")}
-          >
-            {filteredKultum.length > 0 ? (
-              filteredKultum.map((item) => item.ringkasan).join(", ")
-            ) : (
-              <span>-</span>
-            )}
-          </div>
-        );
-      },
-    },
-  ];
-
-  const paginatedData = siswa.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
+
     return () => clearInterval(interval);
   }, []);
 
-  // Format waktu dan tanggal
   const formatTime = currentTime.toLocaleTimeString("en-EN", {
     hour: "2-digit",
     minute: "2-digit",
@@ -222,8 +133,173 @@ const DashboardGuru = () => {
     day: "numeric",
   });
 
-  const today = new Date().toISOString().split("T")[0]; // Ambil tanggal hari ini dalam format YYYY-MM-DD
-  // const isTodayFilled = data.some((item) => item.date === today);
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
+      <ConfigProvider
+        theme={{
+          // token:{
+          //   colorPrimary: ""
+          // },
+          components:{
+            Input:{
+              colorPrimary: '#FFD700'
+            },
+            Button:{
+              colorPrimary: '#FFD700',
+              colorPrimaryHover: '#fce45d',
+              colorTextLightSolid: '#1E3A34',
+            }
+          }
+        }}
+      >
+        <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
+          <Input
+            ref={searchInput}
+            placeholder={`Cari ${dataIndex}`}
+            value={selectedKeys[0]}
+            onChange={(e) =>
+              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            }
+            onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            style={{ marginBottom: 8, display: "block" }}
+          />
+          <Space>
+            <Button
+              type="primary"
+              onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+              icon={<SearchOutlined />}
+              size="small"
+            >
+              Cari
+            </Button>
+            <Button
+              onClick={() => clearFilters && handleReset(clearFilters)}
+              size="small"
+            >
+              Reset
+            </Button>
+            <Button type="link" size="small" onClick={() => close()}>
+              Tutup
+            </Button>
+          </Space>
+        </div>
+      </ConfigProvider>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        className="!text-amber-300 me-2 !font-bold"
+        style={{ color: filtered ? "#" : undefined }}
+      />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]?.toString().toLowerCase().includes(value.toLowerCase()),
+    filterDropdownProps: {
+      onOpenChange(open) {
+        if (open) {
+          setTimeout(() => searchInput.current?.select(), 100);
+        }
+      },
+    },
+  });
+
+  const columns = [
+    {
+      title: "Nama Siswa",
+      dataIndex: "name",
+      key: "name",
+      width: "100%",
+      ...getColumnSearchProps("name"),
+    },
+    {
+      title: "Puasa",
+      dataIndex: "puasa",
+      key: "puasa",
+      className: 'text-center',
+      render: (text) => (
+        <Tag
+          color={text === "iya" ? "green" : text === "tidak" ? "red" : "gray"}
+          className="capitalize !text-base"
+        >
+          {text || "Belum mengisi"}
+        </Tag>
+      ),
+      ...getColumnSearchProps("puasa"),
+    },
+    {
+      title: "Solat",
+      dataIndex: "solat",
+      key: "solat_status",
+      render: (solat) => {
+        const prayers = [
+          { key: "subuh_status", label: "Subuh" },
+          { key: "dzuhur_status", label: "Dzuhur" },
+          { key: "asar_status", label: "Asar" },
+          { key: "maghrib_status", label: "Maghrib" },
+          { key: "isya_status", label: "Isya" },
+        ];
+
+        return (
+          <div className="flex flex-wrap gap-1">
+            {prayers.map((prayer) => (
+              <Tag
+                key={prayer.key}
+                className="!text-sm"
+                color={
+                  solat[prayer.key] === "iya"
+                    ? "green"
+                    : solat[prayer.key] === "tidak"
+                    ? "red"
+                    : "gray"
+                }
+              >
+                {prayer.label}:{" "}
+                {solat[prayer.key] === "iya"
+                  ? "Sudah Solat"
+                  : solat[prayer.key] === "tidak"
+                  ? "Tidak Solat"
+                  : "Belum Solat"}
+              </Tag>
+            ))}
+          </div>
+        );
+      },
+    },
+    {
+      title: "Uraian Tadarus",
+      dataIndex: "tadarus",
+      key: "tadarus",
+    },
+    {
+      title: "Catatan Ceramah/Kultum",
+      key: "kultum",
+      render: (_, record) => {
+        if (record.kultum.length === 0) return "-";
+        return record.kultum.map((item) => item.ringkasan).join(", ");
+      },
+    },
+  ];
+
+  const paginatedData = siswa.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   return (
     <div className="flex justify-center items-center py-4 px-4">
@@ -259,30 +335,42 @@ const DashboardGuru = () => {
             </tbody>
           </table>
         </div>
-
-        <Card title="Kegiatan" className="shadow-md max-w-screen">
-          <div className="overflow-x-auto">
-            <Table
-              columns={columns}
-              dataSource={paginatedData}
-              loading={loading}
-              pagination={false}
-              rowKey={(record) => record.id} // Pastikan setiap row memiliki key unik
-            />
-          </div>
-          <div className="mt-4 flex justify-end">
-            <Pagination
-              current={currentPage}
-              pageSize={pageSize}
-              total={data.length}
-              onChange={(page, pageSize) => {
-                setCurrentPage(page);
-                setPageSize(pageSize);
-              }}
-              className="custom-pagination"
-            />
-          </div>
-        </Card>
+        <ConfigProvider
+          theme={{
+            components: {
+              Card: {
+                colorTextHeading: "#1E3A34",
+              },
+            },
+          }}
+        >
+          <Card
+            title="Kegiatan Siswa Hari ini."
+            className="shadow-md max-w-screen"
+          >
+            <div className="overflow-x-auto">
+              <Table
+                columns={columns}
+                dataSource={paginatedData}
+                loading={loading}
+                pagination={false}
+                rowKey={(record) => record.id}
+              />
+            </div>
+            <div className="mt-4 flex justify-end">
+              <Pagination
+                current={currentPage}
+                pageSize={pageSize}
+                total={siswa.length}
+                onChange={(page, pageSize) => {
+                  setCurrentPage(page);
+                  setPageSize(pageSize);
+                }}
+                className="custom-pagination"
+              />
+            </div>
+          </Card>
+        </ConfigProvider>
       </div>
     </div>
   );

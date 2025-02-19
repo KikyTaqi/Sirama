@@ -182,7 +182,7 @@ const Solat = () => {
                     )}
                     <div
                       
-                      className={`${prayer === "tarawih" ?? "cursor-pointer"} flex justify-between items-center bg-[#2D6A5A] p-2 rounded-md`}
+                      className={`${prayer === "tarawih" ? "cursor-pointer" : ""} flex justify-between items-center bg-[#2D6A5A] p-2 rounded-md`}
                     >
                       <span className="capitalize text-white">{prayer}</span>
                       <div className="flex justify-end">

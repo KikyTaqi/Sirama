@@ -184,8 +184,14 @@ const Dashboard = () => {
     day: "numeric",
   });
 
-  const today = new Date().toISOString().split("T")[0]; // Ambil tanggal hari ini dalam format YYYY-MM-DD
-  const isTodayFilled = data.some((item) => item.date === today);
+  const today = new Date(); // Ambil tanggal hari ini dalam format YYYY-MM-DD
+  const todayLocal =
+    today.getFullYear() +
+    "-" +
+    String(today.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(today.getDate()).padStart(2, "0");
+  const isTodayFilled = data.some((item) => item.date === todayLocal);
 
   return (
     <div className="flex justify-center items-center py-4 px-4">
@@ -235,16 +241,18 @@ const Dashboard = () => {
                 </Button>
               </Link>
             </div>
+          ) : loading ? (
+            ""
           ) : (
             <div className="flex justify-end mb-2">
               <Button
-                  type="secondary"
-                  className="!bg-[#1E3A34] !font-semibold !text-amber-300 mb-2"
-                  disabled
-                  icon={<FaCheck />}
-                >
-                  Sudah mengisi!
-                </Button>
+                type="secondary"
+                className="!bg-[#1E3A34] !font-semibold !text-amber-300 mb-2"
+                disabled
+                icon={<FaCheck />}
+              >
+                Sudah mengisi!
+              </Button>
             </div>
           )}
           <div className="overflow-x-auto">

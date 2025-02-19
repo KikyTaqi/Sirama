@@ -13,7 +13,7 @@ const Register = () => {
     try {
       const { data } = await register(values); // Panggil API untuk registrasi
       message.success("Registrasi berhasil! Silakan login.");
-      navigate("/login"); // Redirect setelah register
+      navigate("/"); // Redirect setelah register
     } catch (error) {
       if (error.response) {
         // Tangani error berdasarkan status kode
