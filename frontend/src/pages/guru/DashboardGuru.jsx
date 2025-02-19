@@ -306,7 +306,7 @@ const DashboardGuru = () => {
       <div className="w-full lg:max-w-4xl">
         <div className="bg-[#1E3A34] p-4 rounded-md mb-4 shadow-md">
           <h2 className="text-2xl font-semibold text-[#FFD700] mb-3">
-            Selamat Datang di Dashboard Guru, {user?.name}!
+            Selamat Datang di Dashboard Guru, <p className="capitalize">{user?.name}!</p>
           </h2>
           <table>
             <tbody>

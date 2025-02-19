@@ -33,7 +33,7 @@ function ChangePassword() {
               })
             .then(() => {
                 setLoading(false);
-                navigate(0);
+                navigate(`/dashboard`);
                 message.success("Password berhasil diubah!");
             })
             .catch((err) => {
