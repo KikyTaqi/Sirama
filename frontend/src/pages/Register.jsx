@@ -1,12 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Input, Button, message, Select } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../api";
+import { useUser } from "../components/UserContext";
 
 const Register = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
+
+  const { user } = useUser();
+
+  useEffect(() => {
+      if (user) {
+        navigate("/dashboard");
+      }
+  });
 
   const onFinish = async (values) => {
     setLoading(true);

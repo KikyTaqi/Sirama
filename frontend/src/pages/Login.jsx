@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Input, Button, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { login, logout } from "../api";
@@ -8,6 +8,12 @@ const Login = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
   const [ loading, setLoading ] = useState(false);
   const { user, fetchUser } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  });
 
   const onFinish = async (values) => {
     setLoading(true)

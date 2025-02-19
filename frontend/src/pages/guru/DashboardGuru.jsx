@@ -100,7 +100,7 @@ const DashboardGuru = () => {
         });
 
         setSiswa(siswaWithData);
-        console.log(siswaWithData);
+        // console.log(siswaWithData);
       } catch (error) {
         message.error("Gagal mengambil data: " + error.message);
       } finally {

@@ -13,6 +13,7 @@ Route::post('/auth/signin', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::post('/user/password/change', [AuthController::class, 'passwordChange']);
     Route::get('/user', function(Request $r) {
         return response()->json($r->user());
     });

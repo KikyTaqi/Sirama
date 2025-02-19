@@ -14,6 +14,7 @@ import {
   FaHouse,
   FaBookQuran,
   FaNoteSticky,
+  FaLock,
 } from "react-icons/fa6";
 
 const Header = () => {
@@ -58,6 +59,11 @@ const Header = () => {
       path: "/kegiatan/kultum",
     },
     {
+      name: "Ubah Password",
+      icon: <FaLock />,
+      path: "/password/change",
+    },
+    {
       name: "Logout",
       icon: <HiOutlineLogout className="text-xl" />,
       path: "#",
@@ -71,11 +77,11 @@ const Header = () => {
     try {
       await logout(); // Logout API
       localStorage.removeItem("token"); // Hapus token
-      message.success("Berhasil Logout.");
       fetchUser();
       navigate("/"); // Redirect ke halaman login
+      message.success("Berhasil Logout.");
     } catch (error) {
-      console.error("Logout failed:", error);
+      message.error("Logout gagal.");
     }
   };
 

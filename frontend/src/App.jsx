@@ -17,6 +17,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import DashboardGuru from "./pages/guru/DashboardGuru";
+import ChangePassword from "./pages/ChangePassword";
 
 //solat
 import Solat from "./pages/solat/Solat";
@@ -86,6 +87,7 @@ function AppContent() {
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/password/change" element={<ChangePassword />} />
 
               {/* Protected Routes */}
               <Route

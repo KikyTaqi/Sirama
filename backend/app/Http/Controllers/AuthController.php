@@ -10,6 +10,28 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    public function passwordChange(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:users,id',
+            'newPassword' => 'required|min:6',
+            'confirmPassword' => 'required|same:newPassword',
+        ]);
+
+        $user = Users::find($request->id);
+
+        if ($user->password) {
+            if (!Hash::check($request->password, $user->password)) {
+                return response()->json(['message' => 'Password saat ini salah'], 400);
+            }
+        }
+
+        $user->password = Hash::make($request->newPassword);
+        $user->save();
+
+        return response()->json(['message' => 'Password berhasil diubah']);
+    }
+
     // REGISTER
     public function register(Request $request)
     {
