@@ -133,7 +133,9 @@ const CreateKultum = () => {
           >
             <Input.TextArea
               rows={4}
+              showCount maxLength={300}
               placeholder="Tulis ringkasan kultum, misal: Tema kultum tentang keutamaan sedekah..."
+              style={{ resize: 'none' }}
               className="w-full !bg-[#4cb399] !border-[#FFD700] !text-[#FFD700] font-semibold !resize-none"
             />
           </Form.Item>

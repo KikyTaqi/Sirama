@@ -173,7 +173,7 @@ const Header = () => {
             ) : (
               <>
                 {menuItems.map((item, index) => {
-                  const isActive = location.pathname === item.path;
+                  const isActive = location.pathname.startsWith(item.path);
                   return (
                     <li
                       key={index}

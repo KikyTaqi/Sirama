@@ -33,6 +33,8 @@ import UpdatePlaces from "./pages/places/UpdatePlaces";
 //kegiatan
 import CreateKegiatan from "./pages/kegiatanSiswa/CreateKegiatan";
 import Kultum from "./pages/kegiatanSiswa/Kultum";
+import KultumGuru from "./pages/guru/kultum/KultumGuru";
+import DetailKultumGuru from "./pages/guru/kultum/DetailKultumGuru";
 import CreateKultum from "./pages/kegiatanSiswa/CreateKultum";
 
 function App() {
@@ -115,6 +117,8 @@ function AppContent() {
                     <Route path="dashboard" element={<DashboardGuru />} />
                     <Route path="solat" element={<SolatGuru />} />
                     <Route path="solat/detail/:id" element={<DetailSolatGuru />} />
+                    <Route path="kegiatan/kultum" element={<KultumGuru />} />
+                    <Route path="kegiatan/kultum/detail/:id" element={<DetailKultumGuru />} />
                   </>
                 )}
 

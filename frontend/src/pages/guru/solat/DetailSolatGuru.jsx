@@ -9,6 +9,7 @@ import {
   ConfigProvider,
   DatePicker,
   Space,
+  Pagination,
 } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { IoIosArrowBack } from "react-icons/io";
@@ -53,6 +54,19 @@ const DetailSolatGuru = () => {
 
     fetchSolatData();
   }, [id]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 5;
+
+  // Data yang ditampilkan sesuai page
+  const paginatedData = solatData.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   // Fungsi Search Antd Filter Dropdown
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -328,15 +342,29 @@ const DetailSolatGuru = () => {
               </div>
             }
           >
-            <Table
-              dataSource={solatData}
-              columns={columns}
-              loading={loading}
-              bordered
-              rowKey={(record) => record.id}
-              scroll={{ x: "max-content" }}
-              pagination={{ className: "custom-pagination" }}
-            />
+            <div className="max-h-[70vh] max-w-screen overflow-auto">
+              <Table
+                dataSource={paginatedData}
+                columns={columns}
+                loading={loading}
+                bordered
+                rowKey={(record) => record.id}
+                scroll={{ x: "max-content" }}
+                pagination={false} // Matikan pagination bawaan
+              />
+            </div>
+
+            {/* Pagination di luar table */}
+            <div className="flex justify-end mt-4">
+              <Pagination
+                current={currentPage}
+                pageSize={pageSize}
+                total={solatData.length}
+                onChange={handlePageChange}
+                showSizeChanger={false}
+                className="custom-pagination"
+              />
+            </div>
           </Card>
         </div>
       </div>
@@ -345,3 +373,5 @@ const DetailSolatGuru = () => {
 };
 
 export default DetailSolatGuru;
+
+//
