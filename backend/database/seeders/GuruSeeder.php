@@ -115,6 +115,110 @@ class GuruSeeder extends Seeder
                 'password' => Hash::make('19670511 200501 2 005'),
             ],
             // END KELAS X
+            [
+                'nis' => 'Mustofa',
+                'name' => 'M. Mustofa, S.Pd.I',
+                'kelas' => 'XI TKR 1',
+                'password' => Hash::make('Mustofa'),
+                'role' => 'guru',
+
+            ],
+            [
+                'nis' => '19680412 200801 1 010',
+                'name' => 'Suroto, S.Pd., M.Pd.',
+                'kelas' => 'XI TKR 2',
+                'password' => Hash::make('19680412 200801 1 010'),
+                'role' => 'guru',
+
+            ],
+            [
+                'nis' => '19780813 200903 1 005',
+                'name' => 'Junaedi, S.T.',
+                'kelas' => 'XI TKR 3',
+                'password' => Hash::make('19780813 200903 1 005'),
+                'role' => 'guru',
+
+            ],
+            [
+                'nis' => 'Subchan',
+                'name' => 'Subchan, S.Fil.',
+                'kelas' => 'XI TKJ 1',
+                'password' => Hash::make('Subchan'),
+                'role' => 'guru',
+
+            ],
+            [
+                'nis' => '19960421 202221 2 007',
+                'name' => 'Putri Kartika Sari, S.Pd.',
+                'kelas' => 'XI TKJ 2',
+                'password' => Hash::make('19960421 202221 2 007'),
+                'role' => 'guru',
+
+            ],
+            [
+                'nis' => '19921001 202221 2 013',
+                'name' => 'Dianing Ratri Oktaviani, S.Pd.',
+                'kelas' => 'XI TKJ 3',
+                'password' => Hash::make('19921001 202221 2 013'),
+                'role' => 'guru',
+
+            ],
+            [
+                'nis' => '19800517 202221 2 014',
+                'name' => 'Supiyarni, S.Pd.',
+                'kelas' => 'XI PG 1',
+                'password' => Hash::make('19800517 202221 2 014'),
+                'role' => 'guru',
+
+            ],
+            [
+                'nis' => '19740918 200604 1 005',
+                'name' => 'Joko Supriyono, S.Pd., M.A.',
+                'kelas' => 'XI RPL 1',
+                'password' => Hash::make('19740918 200604 1 005'),
+                'role' => 'guru',
+
+            ],
+            [
+                'nis' => '19941102 202421 2 035',
+                'name' => 'Nurmayukha, S.Pd.',
+                'kelas' => 'XI RPL 2',
+                'password' => Hash::make('19941102 202421 2 035'),
+                'role' => 'guru',
+
+            ],
+            [
+                'nis' => '19681005 200312 1 003',
+                'name' => 'Misno, S.T., M.Eng.',
+                'kelas' => 'XI TEI 1',
+                'password' => Hash::make('19681005 200312 1 003'),
+                'role' => 'guru',
+
+            ],
+            [
+                'nis' => '19681122 200501 2 008',
+                'name' => 'Sarti, M.Pd.',
+                'kelas' => 'XI TEI 2',
+                'password' => Hash::make('19681122 200501 2 008'),
+                'role' => 'guru',
+
+            ],
+            [
+                'nis' => '19700509 200801 2 007',
+                'name' => 'Tutik Solichati, S.Pd.',
+                'kelas' => 'XI TKI 1',
+                'password' => Hash::make('19700509 200801 2 007'),
+                'role' => 'guru',
+
+            ],
+            [
+                'nis' => '19880314 201101 2 013',
+                'name' => 'Ellysa Purwaningsih, S.Pd',
+                'kelas' => 'XI TKI 2',
+                'password' => Hash::make('19880314 201101 2 013'),
+                'role' => 'guru',
+
+            ],
         ]);
 
         // 1 19841213 202221 2 011 Wali Kelas X TO-1
