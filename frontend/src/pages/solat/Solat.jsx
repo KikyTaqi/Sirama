@@ -148,7 +148,7 @@ const Solat = () => {
   }
 
   return (
-    <div className="flex justify-center items-center py-4 px-4">
+    <div className="flex justify-center items-center p-0 md:p-4">
       <div className="bg-[#2A5D50] shadow-lg rounded-lg p-6 w-full max-w-md">
         {/* Header */}
         <h2 className="text-2xl font-bold text-center text-[#FFD700] mb-6">
@@ -185,9 +185,9 @@ const Solat = () => {
                       className={`${prayer === "tarawih" ? "cursor-pointer" : ""} flex justify-between items-center bg-[#2D6A5A] p-2 rounded-md`}
                     >
                       <span className="capitalize text-white">{prayer}</span>
-                      <div className="flex justify-end">
+                      <div className="flex flex-col md:flex-row justify-end">
                         <span
-                          className={`text-white px-3 py-1 rounded-md ${statusColor}`}
+                          className={`text-white px-3 py-1 ${prayer === 'tarawih' && 'mb-1 md:mb-0'}  rounded-md ${statusColor}`}
                         >
                           {statusText}
                         </span>
@@ -195,7 +195,7 @@ const Solat = () => {
                           <Link to={`/solat/terawih/create`}>
                             <Button
                               type="secondary"
-                              className="!bg-amber-400 !font-semibold !text-[#2A5D50] ms-1"
+                              className="!bg-amber-400 w-full !font-semibold !text-[#2A5D50] md:ms-1"
                             >
                               Isi
                             </Button>

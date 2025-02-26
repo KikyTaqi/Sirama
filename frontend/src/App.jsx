@@ -78,7 +78,7 @@ function AppContent() {
         <Header className="" />
       </div>
       <div className="bg-[#1e3a342f] min-h-screen pt-16">
-        <div className="px-6 py-5">
+        <div className="px-3 md:px-6 py-5">
           {loadingUser ? (
             <div className="w-[95vw] h-[50vh] flex justify-center items-center">
               <Spin size="large" />

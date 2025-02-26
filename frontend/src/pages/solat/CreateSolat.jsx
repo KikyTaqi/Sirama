@@ -419,17 +419,17 @@ const CreateSolat = () => {
               <div className="w-full flex justify-between">
                 <Button
                   type="secondary"
-                  className="!bg-amber-400 !font-semibold !text-[#2A5D50] mt"
+                  className="!bg-amber-400 !font-semibold !text-[#2A5D50] !px-1 md:!px-3"
                   loading={loadingMap}
                   onClick={() => getLocation()}
                   disabled={loadingMap}
                   icon={<MdOutlineRefresh />}
                 >
-                  Refresh Lokasi
+                  Refresh
                 </Button>
                 <Button
                   type="secondary"
-                  className="!bg-amber-400 !font-semibold !text-[#2A5D50]"
+                  className="!bg-amber-400 !font-semibold !text-[#2A5D50] !px-1 md:!px-3"
                   htmlType="submit"
                   loading={loading}
                   disabled={loading}

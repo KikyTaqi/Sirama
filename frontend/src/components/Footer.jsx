@@ -9,9 +9,9 @@ const { Footer } = Layout;
 const CustomFooter = () => {
   return (
     <Footer className="!bg-[#1E3A34] text-[#FFD700] pt-8 pb-6">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-0 md:px-4">
         <div className="flex flex-wrap text-left lg:text-left">
-          <div className="w-full lg:w-6/12 px-4">
+          <div className="w-full lg:w-6/12 px-0 md:px-4">
             <h4 className="text-3xl text-white font-semibold mb-2">
               Jadikan Ramadhan Lebih Bermakna!
             </h4>
@@ -43,9 +43,9 @@ const CustomFooter = () => {
               </Link>
             </div>
           </div>
-          <div className="w-full lg:w-6/12 px-4">
+          <div className="w-full lg:w-6/12 px-0 lg:px-4">
             <div className="flex flex-wrap items-top mb-6">
-              <div className="w-full lg:w-4/12 px-4 mx-auto">
+              <div className="w-full lg:w-4/12 px-0 md:px-4 mx-auto">
                 <span className="block uppercase text-[#FFD700] text-sm font-semibold mb-2">
                   About
                 </span>
